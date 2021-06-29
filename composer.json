@@ -1,0 +1,11 @@
+{
+	"name": "wpsyntex/polylang-wc-stubs",
+	"description": "Polylang WooCommerce function and class declaration stubs for static analysis.",
+	"license": "GPL-3.0-or-later",
+	"homepage": "https://github.com/polylang/polylang-wc-stubs",
+	"type": "library",
+	"require-dev": {
+		"php": "~7.1",
+		"giacocorsiglia/stubs-generator": "^0.5.0"
+	}
+}
