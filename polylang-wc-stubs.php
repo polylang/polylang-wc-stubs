@@ -3706,6 +3706,18 @@ namespace {
         {
         }
         /**
+         * Helper method to filter internal meta keys from all meta data rows for the object.
+         *
+         * @since 1.6.1
+         *
+         * @param WC_Data $object        WC_Data object.
+         * @param array   $raw_meta_data Array of std object of meta data to be filtered.
+         * @return mixed|void
+         */
+        public function filter_raw_meta_data(&$object, $raw_meta_data)
+        {
+        }
+        /**
          * Delegates the method calls to the decorated object.
          *
          * @since 1.6
