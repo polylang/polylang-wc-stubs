@@ -12,6 +12,8 @@ return \StubsGenerator\Finder::create()
 			'css',
 			'js',
 			'tests',
+			'node_modules',
+			'tmp',
 		]
 	)
 	->sortByName();
