@@ -14,7 +14,7 @@ namespace {
         /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Product_Language_CPT
          */
         protected $data_store;
         /**
@@ -31,7 +31,8 @@ namespace {
          *
          * @since 0.3.6
          *
-         * @param object $data Coupon properties.
+         * @param WC_Coupon $data Coupon properties.
+         * @return void
          */
         public function coupon_loaded($data)
         {
@@ -82,9 +83,9 @@ namespace {
          *
          * @since 0.3.6
          *
-         * @param array $args       Arguments passed to WP_Term_Query.
-         * @param array $taxonomies Taxonomies passed to WP_Term_Query.
-         * @return array modified arguments.
+         * @param array    $args       Arguments passed to WP_Term_Query.
+         * @param string[] $taxonomies Taxonomies passed to WP_Term_Query.
+         * @return array Modified arguments.
          */
         public function get_terms_args($args, $taxonomies)
         {
@@ -113,6 +114,8 @@ namespace {
          * Hooked to the action 'admin_menu'.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function init()
         {
@@ -121,6 +124,8 @@ namespace {
          * Adds our endpoints metabox.
          *
          * @since 0.7.5
+         *
+         * @return void
          */
         public function add_meta_box()
         {
@@ -129,6 +134,8 @@ namespace {
          * Displays the WooCommerce endpoints metabox.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function nav_menu_metabox()
         {
@@ -139,6 +146,8 @@ namespace {
          * The links are in the language of the admin language filter.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function nav_menu_links()
         {
@@ -147,6 +156,8 @@ namespace {
          * Get endpoints available in the WooCommerce endpoints menu metabox.
          *
          * @since 0.9.3
+         *
+         * @return string[]
          */
         protected function get_endpoints()
         {
@@ -165,7 +176,7 @@ namespace {
         /**
          * Order language data store.
          *
-         * @var object
+         * @var PLLWC_Order_Language_CPT
          */
         protected $data_store;
         /**
@@ -181,6 +192,8 @@ namespace {
          * and replace them with one unique column.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function custom_columns()
         {
@@ -190,8 +203,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $columns List of table columns.
-         * @return array modified list of columns.
+         * @param string[] $columns List of table columns.
+         * @return string[] modified list of columns.
          */
         public function add_order_column($columns)
         {
@@ -203,6 +216,7 @@ namespace {
          *
          * @param string $column  Column name.
          * @param int    $post_id Order ID.
+         * @return void
          */
         public function order_column($column, $post_id)
         {
@@ -214,6 +228,7 @@ namespace {
          * @since 0.1
          *
          * @param string $post_type Post type name.
+         * @return void
          */
         public function add_meta_boxes($post_type)
         {
@@ -222,6 +237,8 @@ namespace {
          * Displays the Languages metabox.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function order_language()
         {
@@ -251,7 +268,7 @@ namespace {
         /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Product_Language_CPT
          */
         protected $data_store;
         /**
@@ -268,6 +285,8 @@ namespace {
          * Hooked to the acton 'admin_action_duplicate_product'.
          *
          * @since 0.9.3
+         *
+         * @return void
          */
         public function duplicate_product_action()
         {
@@ -282,8 +301,9 @@ namespace {
          * @see https://github.com/woocommerce/woocommerce/issues/13262
          * @since 0.7
          *
-         * @param object $duplicate Duplicated product.
-         * @param object $product   Original product.
+         * @param WC_Product $duplicate Duplicated product.
+         * @param WC_Product $product   Original product.
+         * @return void
          */
         public function product_duplicate($duplicate, $product)
         {
@@ -298,6 +318,7 @@ namespace {
          * @since 1.5
          *
          * @param WC_Product $product The product to generate a slug for.
+         * @return void
          */
         private function generate_unique_slug($product)
         {
@@ -316,7 +337,7 @@ namespace {
         /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Product_Language_CPT
          */
         protected $data_store;
         /**
@@ -332,6 +353,8 @@ namespace {
          * Setups the our js script (only on the products page).
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function admin_enqueue_scripts()
         {
@@ -340,6 +363,8 @@ namespace {
          * Ajax response for changing the language in the product language metabox.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function product_lang_choice()
         {
@@ -351,7 +376,8 @@ namespace {
          * @since 1.0
          *
          * @param int   $id          Product id.
-         * @param array $menu_orders An array with product ids as key and menu_order as value.
+         * @param int[] $menu_orders An array with product ids as key and menu_order as value.
+         * @return void
          */
         public function product_ordering($id, $menu_orders)
         {
@@ -363,8 +389,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $products array with product ids as keys and names as values.
-         * @return array
+         * @param string[] $products array with product ids as keys and names as values.
+         * @return string[]
          */
         public function search_found_products($products)
         {
@@ -377,9 +403,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array  $excludes Query vars excluded from the language filter.
-         * @param object $query    WP Query object.
-         * @return array
+         * @param string[] $excludes Query vars excluded from the language filter.
+         * @param WP_Query $query    WP Query object.
+         * @return string[]
          */
         public function fix_products_search($excludes, $query)
         {
@@ -388,6 +414,8 @@ namespace {
          * Removes the German and Danish specific sanitization for titles.
          *
          * @since 0.7.1
+         *
+         * @return void
          */
         public function remove_sanitize_title()
         {
@@ -396,6 +424,8 @@ namespace {
          * Restores the German and Danish specific sanitization for titles.
          *
          * @since 0.7.1
+         *
+         * @return void
          */
         public function add_sanitize_title()
         {
@@ -415,7 +445,7 @@ namespace {
         /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Product_Language_CPT
          */
         protected $data_store;
         /**
@@ -433,8 +463,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $query Array of SQL clauses.
-         * @return array
+         * @param string[] $query Array of SQL clauses.
+         * @return string[]
          */
         public function report_query($query)
         {
@@ -457,9 +487,9 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $product_ids Not used.
+         * @param int[] $product_ids Not used.
          * @param int   $category_id Product category id.
-         * @retunr array
+         * @return int[]
          */
         public function get_products_in_category($product_ids, $category_id)
         {
@@ -470,10 +500,10 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $clauses    SQL clauses.
-         * @param array $taxonomies Not used.
-         * @param array $args       WP_Term_Query arguments.
-         * @return array Modified SQL clauses
+         * @param string[] $clauses    SQL clauses.
+         * @param string[] $taxonomies Not used.
+         * @param array    $args       WP_Term_Query arguments.
+         * @return string[] Modified SQL clauses
          */
         public function terms_clauses($clauses, $taxonomies, $args)
         {
@@ -534,34 +564,21 @@ namespace {
         /**
          * Reference to PLL_Model object.
          *
-         * @var PLL_Model $model
+         * @var PLL_Model
          */
         protected $model;
         /**
          * List of controls on default WooCommerce pages.
          *
-         * @var stdClass $woocommerce_pages_status
+         * @var stdClass|null
          */
         protected $woocommerce_pages_status = \null;
-        /**
-         * List of translation packages to download.
-         *
-         * @var array $translation_updates
-         */
-        protected $translation_updates;
-        /**
-         * Checks the WooCommerce pages status.
-         * The result is stored in the property $woocommerce_pages_status.
-         *
-         * @since 1.3
-         */
-        protected function check_woocommerce_pages_status()
-        {
-        }
         /**
          * Retrieves the status of the WooCommerce pages.
          *
          * @since 1.3
+         *
+         * @return stdClass
          */
         public function get_woocommerce_pages_status()
         {
@@ -570,6 +587,8 @@ namespace {
          * Loads the status report for the translations of the default pages in the WooCommerce status page.
          *
          * @since 1.3
+         *
+         * @return void
          */
         public function status_report()
         {
@@ -578,6 +597,8 @@ namespace {
          * Loads the status report for the translations of the default pages in our wizard.
          *
          * @since 1.3
+         *
+         * @return void
          */
         public function wizard_status_report()
         {
@@ -605,6 +626,8 @@ namespace {
          * Setups actions and filters.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function init()
         {
@@ -614,11 +637,12 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array  $to_copy List of term metas names.
-         * @param bool   $sync    True if it is synchronization, false if it is a copy.
-         * @param int    $from    Id of the term from which we copy informations.
-         * @param int    $to      Id of the term to which we paste informations.
-         * @param string $lang    Language slug.
+         * @param string[] $to_copy List of term metas names.
+         * @param bool     $sync    True if it is synchronization, false if it is a copy.
+         * @param int      $from    Id of the term from which we copy informations.
+         * @param int      $to      Id of the term to which we paste informations.
+         * @param string   $lang    Language slug.
+         * @return string[]
          */
         public function get_metas_to_copy($to_copy, $sync, $from, $to, $lang)
         {
@@ -631,11 +655,10 @@ namespace {
          *
          * @since 1.2.1
          *
-         * @param array $args       WP_Term_Query arguments.
-         * @param array $taxonomies The list of queried taxonomies.
+         * @param array $args WP_Term_Query arguments.
          * @return array Modified arguments
          */
-        public function get_terms_args($args, $taxonomies)
+        public function get_terms_args($args)
         {
         }
         /**
@@ -646,6 +669,7 @@ namespace {
          * @param mixed  $value Meta value.
          * @param string $key   Meta key.
          * @param string $lang  Language of target.
+         * @return mixed
          */
         public function translate_meta($value, $key, $lang)
         {
@@ -658,6 +682,7 @@ namespace {
          * @since 0.1
          *
          * @param int $term_id Term id.
+         * @return void
          */
         public function saved_product_cat($term_id)
         {
@@ -670,6 +695,7 @@ namespace {
          * @param int    $term_id  Term id.
          * @param int    $tt_id    Term taxonomy id.
          * @param string $taxonomy Taxonomy name.
+         * @return void
          */
         public function create_attribute_term($term_id, $tt_id, $taxonomy)
         {
@@ -678,6 +704,8 @@ namespace {
          * Rewrites WC_Admin_Taxonomies::add_category_fields to populate the metas when creating a new translation.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function add_category_fields()
         {
@@ -685,9 +713,11 @@ namespace {
         /**
          * Filters the media list when adding an image to a product category.
          *
-         * @since 0.2
+         * @since 1.6
+         *
+         * @return void
          */
-        public function admin_print_footer_scripts()
+        public function admin_enqueue_scripts()
         {
         }
     }
@@ -703,6 +733,18 @@ namespace {
     class PLLWC_Admin_WC_Install
     {
         /**
+         * List of WooCommerce pages in all languages.
+         *
+         * @var string[][][]
+         */
+        private $pages;
+        /**
+         * Locale used to translate WooCommerce pages title.
+         *
+         * @var string
+         */
+        private $locale;
+        /**
          * Constructor.
          *
          * @since 0.1
@@ -715,9 +757,9 @@ namespace {
          *
          * @since 0.9
          *
-         * @param array  $post_states List of post states.
-         * @param object $post        Instance of WP_Post.
-         * @return array
+         * @param string[] $post_states List of post display states.
+         * @param WP_Post  $post        The post object.
+         * @return string[]
          */
         public function display_post_states($post_states, $post)
         {
@@ -740,6 +782,7 @@ namespace {
          *
          * @param string $locale The plugin's current locale.
          * @param string $domain Text domain.
+         * @return string
          */
         public function plugin_locale($locale, $domain)
         {
@@ -752,6 +795,8 @@ namespace {
          * for performance reasons as we only need our own translations.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function init_translated_pages()
         {
@@ -761,6 +806,8 @@ namespace {
          * generally in the WooCommerce setup wizard.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function create_page()
         {
@@ -769,6 +816,8 @@ namespace {
          * Install pages from the WooCommerce status tools when using the "Install pages" button.
          *
          * @since 0.1
+         *
+         * @return string
          */
         public function install_pages()
         {
@@ -780,6 +829,7 @@ namespace {
          *
          * @param string $id   WooCommerce page id.
          * @param string $lang Language slug.
+         * @return void
          */
         public function translate_page($id, $lang)
         {
@@ -790,6 +840,7 @@ namespace {
          * @since 0.9.3
          *
          * @param string $lang Language code.
+         * @return void
          */
         protected static function create_default_product_cat($lang)
         {
@@ -800,6 +851,7 @@ namespace {
          * @since 0.9.3
          *
          * @param array $args New language arguments.
+         * @return void
          */
         public function add_language($args)
         {
@@ -809,6 +861,8 @@ namespace {
          * and creates translated default categories.
          *
          * @since 0.9.3
+         *
+         * @return void
          */
         public static function create_default_product_cats()
         {
@@ -817,6 +871,8 @@ namespace {
          * Replaces the Uncategorized product cat in default language by the correct translation.
          *
          * @since 0.9.3
+         *
+         * @return void
          */
         public static function replace_default_product_cats()
         {
@@ -828,6 +884,7 @@ namespace {
          *
          * @param string $option Option name.
          * @param string $value  WooCommerce DB version.
+         * @return void
          */
         public static function update_330_wc_db_version($option, $value)
         {
@@ -866,24 +923,26 @@ namespace {
     {
         const PLUGIN_FILTER = array('woocommerce', 'polylang', 'polylang-pro', 'polylang-wc');
         /**
-         * Reference to PLL_Model object.
-         *
-         * @var object $model
+         * @var PLL_Model
          */
         protected $model;
         /**
-         * Reference to PLL_Wizard object.
-         *
-         * @var object $wizard
+         * @var PLL_Wizard
          */
         protected $wizard;
+        /**
+         * List of translation packages to download.
+         *
+         * @var stdClass[]
+         */
+        protected $translation_updates;
         /**
          * Constructor.
          *
          * @since 1.4
          *
-         * @param object $model   Reference to PLL_Model object.
-         * @param object $wizard  Reference to PLL_Wizard object.
+         * @param PLL_Model  $model  Reference to PLL_Model object.
+         * @param PLL_Wizard $wizard Reference to PLL_Wizard object.
          */
         public function __construct($model, $wizard)
         {
@@ -903,6 +962,8 @@ namespace {
          * Displays the WooCommerce pages step form.
          *
          * @since 1.4
+         *
+         * @return void
          */
         public function display_step_wc_pages()
         {
@@ -911,6 +972,8 @@ namespace {
          * Executes the WooCommerce pages step.
          *
          * @since 1.4
+         *
+         * @return void
          */
         public function save_step_wc_pages()
         {
@@ -920,11 +983,10 @@ namespace {
          *
          * @since 1.4
          *
-         * @param object $updates   Transient value of plugins which need to be updated.
-         * @param string $transient Name of the transient.
-         * @return object Filtered value of the transient.
+         * @param StdClass $updates Transient value of plugins which need to be updated.
+         * @return StdClass Filtered value of the transient.
          */
-        public function update_last_checked($updates, $transient)
+        public function update_last_checked($updates)
         {
         }
         /**
@@ -932,19 +994,18 @@ namespace {
          *
          * @since 1.4
          *
-         * @param object $updates   Transient value of plugins which need to be updated.
-         * @param string $transient Name of the transient.
-         * @return object Filtered value of the transient.
+         * @param StdClass $updates Transient value of plugins which need to be updated.
+         * @return StdClass Filtered value of the transient.
          */
-        public function update_plugins($updates, $transient)
+        public function update_plugins($updates)
         {
         }
         /**
-         * Retrieve translation updates
+         * Retrieves translation updates.
          *
          * @since 1.4
          *
-         * @return array List of translation packages to download.
+         * @return stdClass[] List of translation packages to download.
          */
         public function get_translation_updates()
         {
@@ -975,7 +1036,8 @@ namespace {
          *
          * @since 0.3
          *
-         * @param object $query WP_Query object.
+         * @param WP_Query $query WP_Query object.
+         * @return void
          */
         public function parse_query($query)
         {
@@ -986,9 +1048,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param string $item_name  Product name.
-         * @param object $item       Order item.
-         * @param bool   $is_visible Whether the product is visible.
+         * @param string                $item_name  Product name.
+         * @param WC_Order_Item_Product $item       Order item.
+         * @param bool                  $is_visible Whether the product is visible.
          * @return string Translated product name.
          */
         public function order_item_name($item_name, $item, $is_visible)
@@ -1000,9 +1062,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array  $rows  Order item totals.
-         * @param object $order Order.
-         * @return array
+         * @param string[][] $rows  Order item totals.
+         * @param WC_Order   $order Order.
+         * @return string[][]
          */
         public function translate_payment_method($rows, $order)
         {
@@ -1019,9 +1081,15 @@ namespace {
     class PLLWC_Frontend_Cart
     {
         /**
+         * Controls if the cart translation if enabled.
+         *
+         * @var bool
+         */
+        protected $enable_cart_translation;
+        /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Product_Language_CPT
          */
         protected $data_store;
         /**
@@ -1037,6 +1105,8 @@ namespace {
          * Setups actions and filters once the language is defined.
          *
          * @since 1.0
+         *
+         * @return void
          */
         public function init()
         {
@@ -1046,8 +1116,8 @@ namespace {
          *
          * @since 0.3.2
          *
-         * @param bool|object $lang False or language object.
-         * @return bool|object
+         * @param PLL_Language|false $lang False or language object.
+         * @return PLL_Language|false
          */
         public function pll_set_language_from_query($lang)
         {
@@ -1056,6 +1126,8 @@ namespace {
          * Resets the cached data when switching the language.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function wp_enqueue_scripts()
         {
@@ -1065,10 +1137,10 @@ namespace {
          *
          * @since 1.1
          *
-         * @param array  $attributes Selected attributes.
-         * @param string $lang       Target language.
-         * @param string $orig_lang  Source language.
-         * @return array
+         * @param string[] $attributes Selected attributes.
+         * @param string   $lang       Target language.
+         * @param string   $orig_lang  Source language.
+         * @return string[]
          */
         public function translate_attributes_in_cart($attributes, $lang, $orig_lang)
         {
@@ -1101,6 +1173,8 @@ namespace {
          * Translates the products and removed products in the cart.
          *
          * @since 0.3.5
+         *
+         * @return void
          */
         public function woocommerce_cart_loaded_from_session()
         {
@@ -1122,11 +1196,22 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array  $data    Data to validate in the hash.
-         * @param object $product Product in the cart item.
+         * @param array      $data    Data to validate in the hash.
+         * @param WC_Product $product Product in the cart item.
          * @return array
          */
         public function cart_item_data_to_validate($data, $product)
+        {
+        }
+        /**
+         * Translates the cart page id in the Add to cart action.
+         *
+         * @since 1.6
+         *
+         * @param int $page_id Cart page id.
+         * @return int
+         */
+        public function translate_add_to_cart_page_id($page_id)
         {
         }
     }
@@ -1156,7 +1241,7 @@ namespace {
          *
          * @since 0.3.2
          *
-         * @param object $query Instance of WP_Query.
+         * @param WP_Query $query Instance of WP_Query.
          * @return int page_id
          */
         protected function get_page_id($query)
@@ -1167,8 +1252,9 @@ namespace {
          *
          * @since 0.3.2
          *
-         * @param bool|object $lang  False or language object.
-         * @param object      $query WP_Query object.
+         * @param PLL_Language|false $lang  False or language object.
+         * @param WP_Query           $query WP_Query object.
+         * @return PLL_Language
          */
         public function pll_set_language_from_query($lang, $query)
         {
@@ -1196,6 +1282,8 @@ namespace {
          * Setups actions filters once the language is defined.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function init()
         {
@@ -1204,6 +1292,8 @@ namespace {
          * Resets countries, continents and states translations when the language is set from the content.
          *
          * @since 1.2.3
+         *
+         * @return void
          */
         public function reset_translations()
         {
@@ -1249,6 +1339,8 @@ namespace {
          * Outputs the hidden language input field.
          *
          * @since 0.3.5
+         *
+         * @return void
          */
         public function language_form_field()
         {
@@ -1269,8 +1361,8 @@ namespace {
          *
          * @since 0.5
          *
-         * @param array $arr List of files and functions to whitelist for the home_url filter.
-         * @return array
+         * @param string[][] $arr List of files and functions to whitelist for the home_url filter.
+         * @return string[][]
          */
         public function home_url_white_list($arr)
         {
@@ -1339,6 +1431,8 @@ namespace {
          * Adds a script to allow filtering blocks relying on the WC REST API.
          *
          * @since 1.3
+         *
+         * @return void
          */
         public function filter_dynamic_blocks()
         {
@@ -1366,13 +1460,16 @@ namespace {
      * to be better to create our own class which can be used in a similar way.
      *
      * @since 1.0
+     *
+     * @template TKey
+     * @template TValue
      */
     class PLLWC_Data_Store
     {
         /**
          * Array of data stores.
          *
-         * @var array
+         * @var array<TKey, class-string<TValue>>
          */
         private static $stores = array('order_language' => 'PLLWC_Order_Language_CPT', 'product_language' => 'PLLWC_Product_Language_CPT');
         /**
@@ -1380,8 +1477,10 @@ namespace {
          *
          * @since 1.0
          *
-         * @param string $object_type Identifier for the data store, typically 'order_language' or 'product_language'.
-         * @return object
+         * @throws Exception If the data store doesn't exist.
+         *
+         * @param TKey $object_type Identifier for the data store, typically 'order_language' or 'product_language'.
+         * @return TValue
          */
         public static function load($object_type)
         {
@@ -1400,19 +1499,19 @@ namespace {
         /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Order_Language_CPT
          */
         protected $data_store;
         /**
-         * Previous locale.
+         * Stores if the locale has been switched.
          *
-         * @var string
+         * @var bool[]
          */
-        protected $switched_locale;
+        protected $switched_locale = array();
         /**
          * Previous current language.
          *
-         * @var object PLL_Language
+         * @var (PLL_Language|null)[]
          */
         protected $saved_curlang;
         /**
@@ -1432,6 +1531,7 @@ namespace {
          * @since 0.1
          *
          * @param int $user_id User ID.
+         * @return void
          */
         public function created_customer($user_id)
         {
@@ -1444,6 +1544,7 @@ namespace {
          * @since 1.0
          *
          * @param int $order_id Order ID.
+         * @return void
          */
         public function new_order($order_id)
         {
@@ -1453,6 +1554,8 @@ namespace {
          * Hooked to the action 'change_locale'.
          *
          * @since 1.0.2
+         *
+         * @return void
          */
         public function change_locale()
         {
@@ -1462,7 +1565,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param object $language An instance of PLL_Language.
+         * @param PLL_Language $language An instance of PLL_Language.
+         * @return void
          */
         public function set_email_language($language)
         {
@@ -1473,7 +1577,8 @@ namespace {
          *
          * @since  0.1
          *
-         * @param int|array|object $order Order or order ID.
+         * @param int|array|WC_Order $order Order or order ID.
+         * @return void
          */
         public function before_order_email($order)
         {
@@ -1485,6 +1590,7 @@ namespace {
          * @since 0.1
          *
          * @param int|string $user User ID or user login.
+         * @return void
          */
         public function before_user_email($user)
         {
@@ -1494,6 +1600,8 @@ namespace {
          * Hooked to order and user notifications.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function after_email()
         {
@@ -1504,9 +1612,9 @@ namespace {
          *
          * @since 0.5
          *
-         * @param array  $replace Array of strings to replace placeholders in emails.
-         * @param object $email   Instance of WC_Email.
-         * @return array
+         * @param string[] $replace Array of strings to replace placeholders in emails.
+         * @param WC_Email $email   Instance of WC_Email.
+         * @return string[]
          */
         public function format_string_replace($replace, $email)
         {
@@ -1516,12 +1624,80 @@ namespace {
          *
          * @since 1.0.3
          *
-         * @param null|array|string $value    The value get_metadata() should return.
-         * @param int               $user_id  User ID.
-         * @param string            $meta_key Meta key.
-         * @return null|array|string The meta value.
+         * @param mixed  $value    The value get_metadata() should return.
+         * @param int    $user_id  User ID.
+         * @param string $meta_key Meta key.
+         * @return mixed The meta value.
          */
         public function filter_user_locale($value, $user_id, $meta_key)
+        {
+        }
+        /**
+         * Get the user language by email.
+         *
+         * @nince 1.6
+         *
+         * @param string $email Email.
+         * @return PLL_Language The language of the user having this email, the default language if not found.
+         */
+        protected function get_language_by_email($email)
+        {
+        }
+        /**
+         * Sends order email in the user's language.
+         *
+         * @since 1.6
+         *
+         * @param WC_Email $email    WooCommerce Email Class.
+         * @param int      $order_id Order id.
+         * @return void
+         */
+        protected function send_order_email($email, $order_id)
+        {
+        }
+        /**
+         * Sends cancelled order email in the user's language.
+         *
+         * @since 1.6
+         *
+         * @param int $order_id Order id.
+         * @return void
+         */
+        public function send_cancelled_order_email($order_id)
+        {
+        }
+        /**
+         * Sends failed order email in the user's language.
+         *
+         * @since 1.6
+         *
+         * @param int $order_id Order id.
+         * @return void
+         */
+        public function send_failed_order_email($order_id)
+        {
+        }
+        /**
+         * Sends new order email in the user's language.
+         *
+         * @since 1.6
+         *
+         * @param int $order_id Order id.
+         * @return void
+         */
+        public function send_new_order_email($order_id)
+        {
+        }
+        /**
+         * Handles emails sent from the order actions metabox.
+         *
+         * @since 1.6
+         *
+         * @param WC_Order $order  Order.
+         * @param string   $action Order action.
+         * @return void
+         */
+        public function resend_order_email($order, $action)
         {
         }
     }
@@ -1550,8 +1726,8 @@ namespace {
          *
          * @since 0.8
          *
-         * @param array $columns Columns to export.
-         * @return array
+         * @param string[] $columns Columns to export.
+         * @return string[]
          */
         public function default_columns($columns)
         {
@@ -1562,8 +1738,8 @@ namespace {
          *
          * @since 0.8
          *
-         * @param array  $row     Data exported in a CSV row.
-         * @param object $product Product.
+         * @param array      $row     Data exported in a CSV row.
+         * @param WC_Product $product Product.
          * @return array
          */
         public function row_data($row, $product)
@@ -1583,9 +1759,13 @@ namespace {
         /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Product_Language_CPT
          */
         protected $data_store;
+        /**
+         * @var WC_Product_CSV_Importer
+         */
+        protected $importer;
         /**
          * Constructor.
          * Setups filters and actions.
@@ -1601,8 +1781,8 @@ namespace {
          *
          * @since 0.8
          *
-         * @param array $mappings Importer columns mappings.
-         * @return array
+         * @param string[] $mappings Importer columns mappings.
+         * @return string[]
          */
         public function default_columns($mappings)
         {
@@ -1614,8 +1794,8 @@ namespace {
          *
          * @since 0.8
          *
-         * @param array $options Mapping options.
-         * @return array
+         * @param string[] $options Mapping options.
+         * @return string[]
          */
         public function mapping_options($options)
         {
@@ -1626,8 +1806,9 @@ namespace {
          *
          * @since 0.8
          *
-         * @param object $object Product object.
-         * @param array  $data   Data in a row of the CSV file.
+         * @param WC_Product $object Product object.
+         * @param array      $data   Data in a row of the CSV file.
+         * @return void
          */
         public function inserted_product_object($object, $data)
         {
@@ -1639,6 +1820,7 @@ namespace {
          *
          * @param int   $id   Product id.
          * @param array $data Data in a row of the CSV file.
+         * @return void
          */
         public function set_translation_group($id, $data)
         {
@@ -1650,8 +1832,9 @@ namespace {
          *
          * @since 0.8
          *
-         * @param array $row         Row values.
-         * @param array $mapped_keys Mapped keys.
+         * @param array    $row         Row values.
+         * @param string[] $mapped_keys Mapped keys.
+         * @return void
          */
         public function before_set_parsed_data($row, $mapped_keys)
         {
@@ -1662,6 +1845,7 @@ namespace {
          * @since 0.8
          *
          * @param array $data Data in a row of the CSV file.
+         * @return void
          */
         public function set_language($data)
         {
@@ -1698,7 +1882,7 @@ namespace {
          *
          * @since 0.9
          *
-         * @return object PLL_Language object.
+         * @return PLL_Language
          */
         public function language_for_unique_sku()
         {
@@ -1709,9 +1893,9 @@ namespace {
          *
          * @since 1.0.3
          *
-         * @param array  $callbacks Array of parsing callbacks.
-         * @param object $importer  WC_Product_CSV_Importer object.
-         * @return array
+         * @param callable[]              $callbacks Array of parsing callbacks.
+         * @param WC_Product_CSV_Importer $importer  WC_Product_CSV_Importer object.
+         * @return callable[]
          */
         public function formatting_callbacks($callbacks, $importer)
         {
@@ -1719,9 +1903,6 @@ namespace {
         /**
          * Parse a category field from a CSV.
          * Categories are separated by commas and subcategories are "parent > subcategory".
-         * Mainly a copy of WC_Product_CSV_Importer::parse_categories_field()
-         * using our own term_exists method.
-         * Code last checked: WC 4.0
          *
          * @since 1.0.3
          *
@@ -1733,56 +1914,13 @@ namespace {
         }
         /**
          * Parse a tag field from a CSV.
-         * Mainly a copy of WC_Product_CSV_Importer::parse_tags_field()
-         * using a hack to share the slug.
-         * Code last checked: WC 4.0
          *
          * @since 1.0.3
          *
-         * @param  string $value Field value.
+         * @param string $value Field value.
          * @return array
          */
         public function parse_tags_field($value)
-        {
-        }
-        /**
-         * Explode CSV cell values using commas by default, and handling escaped separators.
-         * Exact copy of WC_Product_Importer::explode_values.
-         * Code last checked: WC 4.0
-         *
-         * @since  1.0.3
-         *
-         * @param  string $value Value to explode.
-         * @return array
-         */
-        protected function explode_values($value)
-        {
-        }
-        /**
-         * Remove formatting and trim each value.
-         * Exact copy of WC_Product_Importer::explode_values_formatter.
-         * Code last checked: WC 4.0
-         *
-         * @since  1.0.3
-         *
-         * @param  string $value Value to format.
-         * @return string
-         */
-        protected function explode_values_formatter($value)
-        {
-        }
-        /**
-         * The exporter prepends a ' to escape fields that start with =, +, - or @.
-         * Remove the prepended ' character preceding those characters.
-         * Exact copy of WC_Product_Importer::unescape_data
-         * Code last checked: WC 4.0
-         *
-         * @since 1.5
-         *
-         * @param  string $value A string that may or may not have been escaped with '.
-         * @return string
-         */
-        protected function unescape_data($value)
         {
         }
     }
@@ -1830,6 +1968,7 @@ namespace {
          *
          * @param string $what        Either 'activate' or 'deactivate'.
          * @param bool   $networkwide True if the plugin is network activated, false otherwise.
+         * @return void
          */
         protected function do_for_all_blogs($what, $networkwide)
         {
@@ -1840,6 +1979,7 @@ namespace {
          * @since 0.1
          *
          * @param bool $networkwide True if the plugin is network activated, false otherwise.
+         * @return void
          */
         public function activate($networkwide)
         {
@@ -1848,6 +1988,8 @@ namespace {
          * Plugin activation on a single site.
          *
          * @since 0.1
+         *
+         * @return void
          */
         protected function _activate()
         {
@@ -1858,6 +2000,7 @@ namespace {
          * @since 0.1
          *
          * @param bool $networkwide True if the plugin is network activated, false otherwise.
+         * @return void
          */
         public function deactivate($networkwide)
         {
@@ -1866,6 +2009,8 @@ namespace {
          * Plugin deactivation on a single site.
          *
          * @since 0.1
+         *
+         * @return void
          */
         protected function _deactivate()
         {
@@ -1876,6 +2021,7 @@ namespace {
          * @since 0.9.4
          *
          * @param int $blog_id Blog ID.
+         * @return void
          */
         public function wpmu_new_blog($blog_id)
         {
@@ -1905,8 +2051,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $pre Not used.
-         * @return array Unmodified $pre
+         * @param string[] $pre Not used.
+         * @return string[] Unmodified $pre.
          */
         public function prepare_rewrite_rules($pre)
         {
@@ -1916,7 +2062,7 @@ namespace {
          *
          * @since 0.3.6
          *
-         * @return array
+         * @return string[]
          */
         protected function get_all_shop_page_slugs()
         {
@@ -1929,8 +2075,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $rules Rewrite rules.
-         * @return array Modified rewrite rules.
+         * @param string[] $rules Rewrite rules.
+         * @return string[] Modified rewrite rules.
          */
         public function rewrite_shop_rules($rules)
         {
@@ -1941,8 +2087,8 @@ namespace {
          *
          * @since 0.9.5
          *
-         * @param array $rules Rewrite rules.
-         * @return array Modified rewrite rules.
+         * @param string[] $rules Rewrite rules.
+         * @return string[] Modified rewrite rules.
          */
         public function rewrite_shop_subpages_rules($rules)
         {
@@ -1953,7 +2099,7 @@ namespace {
          * @since 0.1
          *
          * @param bool        $modify  Whether to modify or not the rule, defaults to true.
-         * @param array       $rule    Original rewrite rule.
+         * @param string[]    $rule    Original rewrite rule.
          * @param string      $filter  Current set of rules being modified.
          * @param string|bool $archive Custom post post type archive name or false if it is not a cpt archive.
          * @return bool
@@ -1981,8 +2127,8 @@ namespace {
          *
          * @since 0.3.6
          *
-         * @param array $permalinks WooCommerce permalinks options.
-         * @return array
+         * @param string[] $permalinks WooCommerce permalinks options.
+         * @return string[]
          */
         public function option_woocommerce_permalinks($permalinks)
         {
@@ -1992,8 +2138,8 @@ namespace {
          *
          * @since 0.5
          *
-         * @param array $languages Array of PLL_Language objects.
-         * @return array
+         * @param PLL_Language[] $languages Array of PLL_Language objects.
+         * @return PLL_Language[]
          */
         public static function set_home_urls($languages)
         {
@@ -2003,8 +2149,8 @@ namespace {
          *
          * @since 0.5
          *
-         * @param array $languages Array of PLL_Language objects.
-         * @return array
+         * @param PLL_Language[] $languages Array of PLL_Language objects.
+         * @return PLL_Language[]
          */
         public static function pll_after_languages_cache($languages)
         {
@@ -2016,8 +2162,8 @@ namespace {
          *
          * @since 1.5.1
          *
-         * @param string $url   Order received url.
-         * @param object $order WC_Order object.
+         * @param string   $url   Order received url.
+         * @param WC_Order $order WC_Order object.
          * @return string
          */
         public function checkout_order_received_url($url, $order)
@@ -2035,6 +2181,10 @@ namespace {
     class PLLWC_Links_Pro extends \PLLWC_Links
     {
         /**
+         * @var PLL_Translate_Slugs_Model
+         */
+        protected $slugs_model;
+        /**
          * Constructor.
          *
          * @since 0.1
@@ -2047,7 +2197,7 @@ namespace {
          *
          * @since 0.4
          *
-         * @return array
+         * @return string[]
          */
         protected function get_query_vars()
         {
@@ -2057,9 +2207,9 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array  $slugs    The list of slugs.
-         * @param object $language Instance of PLL_Language.
-         * @param object $mo       The translations object, instance of PLL_MO.
+         * @param array        $slugs    The list of slugs.
+         * @param PLL_Language $language Instance of PLL_Language.
+         * @param PLL_MO       $mo       The translations object, instance of PLL_MO.
          * @return array
          */
         public function pll_translated_slugs($slugs, $language, &$mo)
@@ -2070,8 +2220,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $pre Not used.
-         * @return Unmodified $pre.
+         * @param string[] $pre Not used.
+         * @return string[] Unmodified $pre.
          */
         public function prepare_rewrite_rules($pre)
         {
@@ -2082,8 +2232,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $rules Rewrite rules.
-         * @return array modified rewrite rules.
+         * @param string[] $rules Rewrite rules.
+         * @return string[] modified rewrite rules.
          */
         public function rewrite_translated_slug($rules)
         {
@@ -2093,9 +2243,9 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array  $rules Rewrite rules.
-         * @param string $type  Type of slug to translate.
-         * @return array Modified rewrite rules.
+         * @param string[] $rules Rewrite rules.
+         * @param string   $type  Type of slug to translate.
+         * @return string[] Modified rewrite rules.
          */
         public function translate_rule($rules, $type)
         {
@@ -2105,11 +2255,11 @@ namespace {
          *
          * @øince 0.1
          *
-         * @param string     $link     Endpoint url.
-         * @param string     $endpoint Endpoint name.
-         * @param int|string $value    Endpoint value.
+         * @param string $link     Endpoint url.
+         * @param string $endpoint Endpoint name.
+         * @return string
          */
-        public function get_endpoint_url($link, $endpoint, $value)
+        public function get_endpoint_url($link, $endpoint)
         {
         }
         /**
@@ -2117,8 +2267,8 @@ namespace {
          *
          * @øince 0.1
          *
-         * @param array $slugs Edit address endpoint slugs, typically 'billing' and 'shipping'.
-         * @return array
+         * @param string[] $slugs Edit address endpoint slugs, typically 'billing' and 'shipping'.
+         * @return string[]
          */
         public function edit_address_slugs($slugs)
         {
@@ -2141,7 +2291,7 @@ namespace {
      * @package Polylang-WC
      */
     /**
-     * Setups an object language model when managed the object is a custom post type.
+     * Setups an object language model when the managed object is a custom post type.
      *
      * @since 1.0
      */
@@ -2162,8 +2312,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param int    $id   Order id.
+         * @param int    $id   Object id.
          * @param string $lang Language code.
+         * @return void
          */
         public function set_language($id, $lang)
         {
@@ -2173,9 +2324,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param int    $id    Order id.
+         * @param int    $id    Object id.
          * @param string $field Optional, the language field to return ( see PLL_Language ), defaults to 'slug'.
-         * @return bool|string Language code, false if no language is associated to this order.
+         * @return string|false Language code, false if no language is associated to this order.
          */
         public function get_language($id, $field = 'slug')
         {
@@ -2196,7 +2347,7 @@ namespace {
          *
          * @since 1.0
          *
-         * @param object|array|string $lang A PLL_Language object or a comma separated list of language slug or an array of language slugs.
+         * @param PLL_Language|string|string[] $lang A PLL_Language object or a comma separated list of language slug or an array of language slugs.
          * @return string Where clause.
          */
         public function where_clause($lang)
@@ -2217,6 +2368,8 @@ namespace {
          * Add filters.
          *
          * @since 1.0
+         *
+         * @return void
          */
         public function init()
         {
@@ -2226,9 +2379,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array $types List of post type names for which Polylang manages language and translations.
-         * @param bool  $hide  True when displaying the list in Polylang settings.
-         * @return array List of post type names for which Polylang manages language and translations.
+         * @param string[] $types List of post type names for which Polylang manages language and translations.
+         * @param bool     $hide  True when displaying the list in Polylang settings.
+         * @return string[] List of post type names for which Polylang manages language and translations.
          */
         public function translated_post_types($types, $hide)
         {
@@ -2238,8 +2391,8 @@ namespace {
          *
          * @since 1.0.4
          *
-         * @param array $types List of post type names for which Polylang manages the bulk translate.
-         * @return array
+         * @param string[] $types List of post type names for which Polylang manages the bulk translate.
+         * @return string[]
          */
         public function bulk_translate_post_types($types)
         {
@@ -2259,7 +2412,7 @@ namespace {
         /**
          * WooCommerce permalinks option.
          *
-         * @var array
+         * @var string[]
          */
         protected $permalinks;
         /**
@@ -2297,7 +2450,7 @@ namespace {
          *
          * @since 0.1
          *
-         * @return array List of taxonomy names.
+         * @return string[] List of taxonomy names.
          */
         protected static function get_translated_taxonomies()
         {
@@ -2308,9 +2461,9 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $taxonomies List of taxonomy names for which Polylang manages language and translations.
-         * @param bool  $hide       True when displaying the list in Polylang settings.
-         * @return array List of taxonomy names for which Polylang manages language and translations.
+         * @param string[] $taxonomies List of taxonomy names for which Polylang manages language and translations.
+         * @param bool     $hide       True when displaying the list in Polylang settings.
+         * @return string[] List of taxonomy names for which Polylang manages language and translations.
          */
         public function translate_taxonomies($taxonomies, $hide)
         {
@@ -2320,11 +2473,10 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $taxonomies The list of taxonomies to copy or synchronize.
-         * @param bool  $sync       True for sync, false for copy.
-         * @return array The list of taxonomies to copy or synchronize.
+         * @param string[] $taxonomies The list of taxonomies to copy or synchronize.
+         * @return string[] The list of taxonomies to copy or synchronize.
          */
-        public function copy_taxonomies($taxonomies, $sync)
+        public function copy_taxonomies($taxonomies)
         {
         }
     }
@@ -2345,6 +2497,7 @@ namespace {
          *
          * @param int    $id    ID of object to update.
          * @param string $table Lookup table name.
+         * @return void
          */
         public function wc_update_lookup_table($id, $table)
         {
@@ -2375,7 +2528,8 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array $arr An associative array of translations with language code as key and product id as value.
+         * @param int[] $arr An associative array of translations with language code as key and product id as value.
+         * @return void
          */
         public function save_translations($arr)
         {
@@ -2386,7 +2540,7 @@ namespace {
          * @since 1.0
          *
          * @param int $id Object id.
-         * @return array An associative array of translations with language code as key and translation product id as value.
+         * @return int[] An associative array of translations with language code as key and translation product id as value.
          */
         public function get_translations($id)
         {
@@ -2417,19 +2571,19 @@ namespace {
         /**
          * WooCommerce permalinks option.
          *
-         * @var array
+         * @var string[]
          */
         protected $permalinks;
         /**
          * Current attribute term being edited.
          *
-         * @var object WP_Term
+         * @var WP_Term|null
          */
         protected static $editing_term;
         /**
          * Product data store.
          *
-         * @var object PLLWC_Product_Data_Store_CPT
+         * @var PLLWC_Product_Data_Store_CPT
          */
         protected $data_store;
         /**
@@ -2444,6 +2598,8 @@ namespace {
          * Add filters, should be called only once.
          *
          * @since 1.0
+         *
+         * @return void
          */
         public function init()
         {
@@ -2453,9 +2609,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array $types List of post type names for which Polylang manages language and translations.
-         * @param bool  $hide  True when displaying the list in Polylang settings.
-         * @return array List of post type names for which Polylang manages language and translations.
+         * @param string[] $types List of post type names for which Polylang manages language and translations.
+         * @param bool     $hide  True when displaying the list in Polylang settings.
+         * @return string[] List of post type names for which Polylang manages language and translations.
          */
         public function translated_post_types($types, $hide)
         {
@@ -2487,10 +2643,11 @@ namespace {
          *
          * @since 1.3.3
          *
-         * @param int    $object_id Object ID.
-         * @param array  $terms     An array of object terms.
-         * @param array  $tt_ids    An array of term taxonomy IDs.
-         * @param string $taxonomy  Taxonomy slug.
+         * @param int       $object_id Object ID.
+         * @param WP_Term[] $terms     An array of object terms.
+         * @param int[]     $tt_ids    An array of term taxonomy IDs.
+         * @param string    $taxonomy  Taxonomy slug.
+         * @return void
          */
         public function set_object_terms($object_id, $terms, $tt_ids, $taxonomy)
         {
@@ -2500,7 +2657,7 @@ namespace {
          *
          * @since 1.0
          *
-         * @return array
+         * @return string[]
          */
         protected function get_legacy_metas()
         {
@@ -2510,12 +2667,12 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array  $metas List of custom fields names.
-         * @param bool   $sync  True if it is synchronization, false if it is a copy.
-         * @param int    $from  Id of the product from which we copy informations.
-         * @param int    $to    Id of the product to which we copy informations.
-         * @param string $lang  Language code.
-         * @return array
+         * @param string[] $metas List of custom fields names.
+         * @param bool     $sync  True if it is synchronization, false if it is a copy.
+         * @param int      $from  Id of the product from which we copy informations.
+         * @param int      $to    Id of the product to which we copy informations.
+         * @param string   $lang  Language code.
+         * @return string[]
          */
         public function copy_post_metas($metas, $sync, $from, $to, $lang)
         {
@@ -2527,6 +2684,7 @@ namespace {
          *
          * @param int    $id    ID of object to update.
          * @param string $table Lookup table name.
+         * @return void
          */
         public function update_lookup_table($id, $table)
         {
@@ -2536,8 +2694,9 @@ namespace {
          *
          * @since 1.2
          *
-         * @param object $product       Product.
-         * @param array  $updated_props Product properties being updated.
+         * @param WC_Product|false $product       Product.
+         * @param array            $updated_props Product properties being updated.
+         * @return void
          */
         public function updated_props($product, $updated_props)
         {
@@ -2578,6 +2737,7 @@ namespace {
          * @param int    $to    Id of the product to which we copy informations.
          * @param string $lang  Language code.
          * @param bool   $sync  Optional, defaults to false. True if it is synchronization, false if it is a copy.
+         * @return void
          */
         public function copy($from, $to, $lang, $sync = \false)
         {
@@ -2587,8 +2747,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param int   $id    Product id.
-         * @param array $order Product order.
+         * @param int $id    Product id.
+         * @param int $order Product order.
+         * @return void
          */
         public function save_product_ordering($id, $order)
         {
@@ -2636,7 +2797,8 @@ namespace {
         }
         /**
          * When editing a term, check for product attributes.
-         * This is a exact copy of WC_Post_Data::edit_term().
+         *
+         * The method replaces WC_Post_Data::edit_term().
          * A copy is needed because of the private property $editing_term.
          * Code last checked: WC 4.0
          *
@@ -2645,12 +2807,14 @@ namespace {
          * @param  int    $term_id  Term ID.
          * @param  int    $tt_id    Term taxonomy ID.
          * @param  string $taxonomy Taxonomy slug.
+         * @return void
          */
         public static function edit_term($term_id, $tt_id, $taxonomy)
         {
         }
         /**
          * When a term is edited, check for product attributes and update variations.
+         *
          * This is a modified version of WC_Post_Data::edited_term().
          * The language is added to the query to take into account updates of attributes sharing the same slug.
          * Code last checked: WC 4.0
@@ -2660,6 +2824,7 @@ namespace {
          * @param  int    $term_id  Term ID.
          * @param  int    $tt_id    Term taxonomy ID.
          * @param  string $taxonomy Taxonomy slug.
+         * @return void
          */
         public function edited_term($term_id, $tt_id, $taxonomy)
         {
@@ -2678,7 +2843,7 @@ namespace {
         /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Product_Language_CPT
          */
         protected $data_store;
         /**
@@ -2697,6 +2862,7 @@ namespace {
          * @param int    $id        Source variation product id.
          * @param int    $tr_parent Target variable product id.
          * @param string $lang      Target language.
+         * @return void
          */
         protected function copy_variation($id, $tr_parent, $lang)
         {
@@ -2709,9 +2875,9 @@ namespace {
          * @param int    $from Product id from which we copy informations.
          * @param int    $to   Product id to which we paste informations.
          * @param string $lang Language code.
-         * @param bool   $sync True if it is synchronization, false if it is a copy, defaults to false.
+         * @return void
          */
-        public function copy_variations($from, $to, $lang, $sync = \false)
+        public function copy_variations($from, $to, $lang)
         {
         }
         /**
@@ -2720,8 +2886,9 @@ namespace {
          *
          * @since 0.1
          *
-         * @param string $post_type Post type.
-         * @param object $post      Current post object.
+         * @param string  $post_type Post type.
+         * @param WP_Post $post      Current post object.
+         * @return void
          */
         public function add_meta_boxes($post_type, $post)
         {
@@ -2733,6 +2900,7 @@ namespace {
          * @since 1.0
          *
          * @param int $id Product ID.
+         * @return void
          */
         public function save_product($id)
         {
@@ -2744,19 +2912,9 @@ namespace {
          * @since 1.0
          *
          * @param int $id Variation product id.
+         * @return void
          */
         public function save_variation($id)
-        {
-        }
-        /**
-         * Synchronizes variations deletion.
-         * Backward compatibility with WC < 3.4.
-         *
-         * @since 0.1
-         *
-         * @param int $post_id Product ID.
-         */
-        public function delete_post($post_id)
         {
         }
         /**
@@ -2766,6 +2924,7 @@ namespace {
          * @since 1.0
          *
          * @param int $id Variation product id.
+         * @return void
          */
         public function delete_variation($id)
         {
@@ -2791,6 +2950,7 @@ namespace {
          * @param int  $from Product id from which we copy informations.
          * @param int  $to   Product id which we paste informations.
          * @param bool $sync True if it is synchronization, false if it is a copy.
+         * @return bool
          */
         public static function should_copy_texts($from, $to, $sync)
         {
@@ -2813,9 +2973,9 @@ namespace {
          *
          * @since 1.0
          *
-         * @param array  $attributes Product attributes.
-         * @param string $lang       Language code.
-         * @return array
+         * @param string[] $attributes Product attributes.
+         * @param string   $lang       Language code.
+         * @return string[]
          */
         protected function maybe_translate_attributes($attributes, $lang)
         {
@@ -2838,9 +2998,9 @@ namespace {
          *
          * @since 1.3
          *
-         * @param array  $excludes Query vars excluded from the language filter.
-         * @param object $query    WP Query object.
-         * @return array
+         * @param string[] $excludes Query vars excluded from the language filter.
+         * @param WP_Query $query    WP Query object.
+         * @return string[]
          */
         public function fix_on_sale_products_block_query($excludes, $query)
         {
@@ -2859,6 +3019,14 @@ namespace {
     class PLLWC_REST_API
     {
         /**
+         * @var PLLWC_REST_Product
+         */
+        public $product;
+        /**
+         * @var PLLWC_REST_Order
+         */
+        public $order;
+        /**
          * Constructor.
          * Setups actions and filters.
          *
@@ -2871,6 +3039,8 @@ namespace {
          * Initializes filters after the Polylang REST API has been initialized.
          *
          * @since 0.9
+         *
+         * @return void
          */
         public function init()
         {
@@ -2909,6 +3079,12 @@ namespace {
     class PLLWC_REST_Order extends \PLL_REST_Translated_Object
     {
         /**
+         * Order language data store.
+         *
+         * @var PLLWC_Order_Language_CPT
+         */
+        protected $data_store;
+        /**
          * Constructor.
          *
          * @since 1.1
@@ -2922,7 +3098,7 @@ namespace {
          * @since 1.1
          *
          * @param array $object Order array.
-         * @return string
+         * @return string|false
          */
         public function get_language($object)
         {
@@ -2932,8 +3108,8 @@ namespace {
          *
          * @since 1.1
          *
-         * @param string $lang   Language code.
-         * @param object $object Instance of WC_Order.
+         * @param string   $lang   Language code.
+         * @param WC_Order $object Instance of WC_Order.
          * @return bool
          */
         public function set_language($lang, $object)
@@ -2951,6 +3127,12 @@ namespace {
     class PLLWC_REST_Product extends \PLL_REST_Translated_Object
     {
         /**
+         * Product language data store.
+         *
+         * @var PLLWC_Product_Language_CPT
+         */
+        protected $data_store;
+        /**
          * Constructor.
          *
          * @since 1.1
@@ -2964,7 +3146,7 @@ namespace {
          * @since 1.1
          *
          * @param array $object Product array.
-         * @return string
+         * @return string|false
          */
         public function get_language($object)
         {
@@ -2997,7 +3179,7 @@ namespace {
          *
          * @since 1.1
          *
-         * @param array  $translations Array of translations with language codes as keys and object ids as values.
+         * @param int[]  $translations Array of translations with language codes as keys and object ids as values.
          * @param object $object       Instance of WC_Product.
          * @return bool
          */
@@ -3041,25 +3223,17 @@ namespace {
         /**
          * Product language data store.
          *
-         * @var object
+         * @var PLLWC_Product_Language_CPT
          */
         protected $data_store;
         /**
          * Constructor.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function __construct()
-        {
-        }
-        /**
-         * Synchronizes the stock across the product translations.
-         *
-         * @since 0.9
-         *
-         * @param object $product An instance of WC_Product.
-         */
-        public function set_stock($product)
         {
         }
         /**
@@ -3069,7 +3243,7 @@ namespace {
          *
          * @param string $sql        SQL query used to update the product stock.
          * @param int    $product_id Product id.
-         * @return Modified SQL query
+         * @return string Modified SQL query.
          */
         public function update_product_stock_query($sql, $product_id)
         {
@@ -3080,6 +3254,7 @@ namespace {
          * @since 1.2
          *
          * @param int $id Product id.
+         * @return void
          */
         public function updated_product_stock($id)
         {
@@ -3091,6 +3266,7 @@ namespace {
          *
          * @param int    $id     Product id.
          * @param string $status Stock status.
+         * @return void
          */
         public function set_stock_status($id, $status)
         {
@@ -3103,6 +3279,7 @@ namespace {
          * @param string $query            The query for getting reserved stock of a product.
          * @param int    $product_id       Product ID.
          * @param int    $exclude_order_id Order to exclude from the results.
+         * @return string
          */
         public function query_for_reserved_stock($query, $product_id, $exclude_order_id)
         {
@@ -3155,8 +3332,8 @@ namespace {
          * @since 0.1
          * @since 0.9 Add $gateway parameter
          *
-         * @param string $prop    Property name.
-         * @param object $gateway WC_Payment_Gateway object.
+         * @param string             $prop    Property name.
+         * @param WC_Payment_Gateway $gateway WC_Payment_Gateway object.
          * @return bool
          */
         protected function is_translated_gateway_property($prop, $gateway = \null)
@@ -3200,9 +3377,10 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array    $objects          Array of objects having properties to translate.
-         * @param callback $is_translated_cb Function testing if a property should be translated.
-         * @param callback $is_multiline_cb  Function testing if the input field should be multiline (default to false).
+         * @param WC_Settings_API[] $objects          Array of objects having properties to translate.
+         * @param callable          $is_translated_cb Function testing if a property should be translated.
+         * @param callable          $is_multiline_cb  Function testing if the input field should be multiline (default to false).
+         * @return void
          */
         protected function register_sub_options($objects, $is_translated_cb, $is_multiline_cb = '__return_false')
         {
@@ -3211,6 +3389,8 @@ namespace {
          * Registers strings
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function register_strings()
         {
@@ -3233,6 +3413,8 @@ namespace {
          * Setups actions and filters to translate strings.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function translate_strings()
         {
@@ -3241,6 +3423,8 @@ namespace {
          * Translates emails subject, heading and footer.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function translate_emails()
         {
@@ -3251,10 +3435,11 @@ namespace {
          *
          * @since 0.8
          *
-         * @param string $value  String to translate.
-         * @param object $email  Instance of WC_Email, not used.
-         * @param string $_value Same as $value, not used.
-         * @param string $key    Option name.
+         * @param string   $value  String to translate.
+         * @param WC_Email $email  Instance of WC_Email, not used.
+         * @param string   $_value Same as $value, not used.
+         * @param string   $key    Option name.
+         * @return string
          */
         public function translate_email_option($value, $email, $_value, $key)
         {
@@ -3263,6 +3448,8 @@ namespace {
          * Translates the gateway instructions in thankyou page or email.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function translate_instructions()
         {
@@ -3283,7 +3470,7 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $rates Array of WC_Shipping_Rate objects.
+         * @param WC_Shipping_Rate[] $rates Array of WC_Shipping_Rate objects.
          * @return array
          */
         public function translate_shipping($rates)
@@ -3294,9 +3481,9 @@ namespace {
          *
          * @since 0.1
          *
-         * @param object $cart WC_Cart object.
+         * @return void
          */
-        public function reset_shipping_language($cart)
+        public function reset_shipping_language()
         {
         }
         /**
@@ -3304,8 +3491,8 @@ namespace {
          *
          * @since 0.1
          *
-         * @param array $attribute_taxonomies Attribute taxonomies.
-         * @return array
+         * @param stdClass[] $attribute_taxonomies Attribute taxonomies.
+         * @return stdClass[]
          */
         public function attribute_taxonomies($attribute_taxonomies)
         {
@@ -3327,9 +3514,9 @@ namespace {
          *
          * @since 0.7
          *
-         * @param string $label   Attribute label.
-         * @param string $name    Taxonomy name, not used.
-         * @param object $product Product data.
+         * @param string            $label   Attribute label.
+         * @param string            $name    Taxonomy name, not used.
+         * @param WC_Product|string $product Product data or empty string.
          * @return string
          */
         public function attribute_label($label, $name, $product)
@@ -3373,6 +3560,180 @@ namespace {
      * @package Polylang-WC
      */
     /**
+     * Decorates the Product variation data store.
+     *
+     * @since 1.6
+     */
+    class PLLWC_Variation_Data_Store_CPT implements \WC_Object_Data_Store_Interface
+    {
+        /**
+         * The decorated product variation data store.
+         *
+         * @var WC_Object_Data_Store_Interface
+         */
+        protected $variation_data_store;
+        /**
+         * Product language data store.
+         *
+         * @var PLLWC_Product_Language_CPT
+         */
+        protected $language_data_store;
+        /**
+         * Language used to filter attributes when reading a product variation.
+         *
+         * @var string|false
+         */
+        private $attribute_filter_lang = \false;
+        /**
+         * Replaces the product variation data store used by WooCommerce by our own.
+         *
+         * @since 1.6
+         *
+         * @return void
+         */
+        public static function init()
+        {
+        }
+        /**
+         * Decorates the Product variation data store.
+         *
+         * @since 1.6
+         *
+         * @param string|WC_Object_Data_Store_Interface $store A data store object or class name.
+         * @return PLLWC_Variation_Data_Store_CPT
+         */
+        public static function filter_data_store($store)
+        {
+        }
+        /**
+         * Constructor.
+         *
+         * @since 1.6
+         *
+         * @param WC_Object_Data_Store_Interface $store A data store object to decorate.
+         */
+        public function __construct($store)
+        {
+        }
+        /**
+         * Reads a product from the database and sets its data.
+         *
+         * @since 1.6
+         *
+         * @param WC_Product_Variation $product Product object.
+         * @return void
+         */
+        public function read(&$product)
+        {
+        }
+        /**
+         * Method to create a new product in the database.
+         *
+         * @since 1.6
+         *
+         * @param WC_Product $product Product object.
+         * @return void
+         */
+        public function create(&$product)
+        {
+        }
+        /**
+         * Method to update a product in the database.
+         *
+         * @since 1.6
+         *
+         * @param WC_Product $product Product object.
+         * @return void
+         */
+        public function update(&$product)
+        {
+        }
+        /**
+         * Method to delete a product from the database.
+         *
+         * @since 1.6
+         *
+         * @param WC_Product $product Product object.
+         * @param array      $args    Array of args to pass to the delete method.
+         * @return void
+         */
+        public function delete(&$product, $args = array())
+        {
+        }
+        /**
+         * Returns an array of meta for an object.
+         *
+         * @since 1.6
+         *
+         * @param WC_Data $object WC_Data object.
+         * @return array
+         */
+        public function read_meta(&$object)
+        {
+        }
+        /**
+         * Deletes meta based on meta ID.
+         *
+         * @since 1.6
+         * @param WC_Data  $object WC_Data object.
+         * @param stdClass $meta  (containing at least ->id).
+         */
+        public function delete_meta(&$object, $meta)
+        {
+        }
+        /**
+         * Add new piece of meta.
+         *
+         * @since 1.6
+         *
+         * @param WC_Data  $object WC_Data object.
+         * @param stdClass $meta (containing ->key and ->value).
+         * @return int meta ID
+         */
+        public function add_meta(&$object, $meta)
+        {
+        }
+        /**
+         * Update meta.
+         *
+         * @since 1.6
+         *
+         * @param WC_Data  $object WC_Data object.
+         * @param stdClass $meta (containing ->id, ->key and ->value).
+         * @return void
+         */
+        public function update_meta(&$object, $meta)
+        {
+        }
+        /**
+         * Delegates the method calls to the decorated object.
+         *
+         * @since 1.6
+         *
+         * @param string $method Method name.
+         * @param array  $args   Method arguments.
+         * @return mixed
+         */
+        public function __call($method, $args)
+        {
+        }
+        /**
+         * Ensure that the attribute term retrieved with `get_term_by()` slug is in
+         * the product language when generating the product variation title and summary.
+         *
+         * @since 1.6
+         *
+         * @param array $args The terms query arguments.
+         * @return array
+         */
+        public function get_terms_args($args)
+        {
+        }
+    }
+    /**
+     * @package Polylang-WC
+     */
+    /**
      * A class to store cross domain data in the WC session table.
      *
      * @since 0.3
@@ -3387,6 +3748,7 @@ namespace {
          * @param string $key     A unique hash key.
          * @param array  $data    Data to store in the session.
          * @param int    $user_id Optional, user id.
+         * @return void
          */
         public function set($key, $data, $user_id = 0)
         {
@@ -3439,6 +3801,7 @@ namespace {
          * @since 0.3
          *
          * @param array $data Transferred data.
+         * @return void
          */
         public function set_xdata($data)
         {
@@ -3466,9 +3829,9 @@ namespace {
     class PLLWC_Bookings
     {
         /**
-         * Previous locale after a locale switch.
+         * Stores if the locale has been switched.
          *
-         * @var string
+         * @var bool
          */
         private $switched_locale;
         /**
@@ -3478,6 +3841,17 @@ namespace {
          * @since 0.6
          */
         public function __construct()
+        {
+        }
+        /**
+         * Add Bookings e-mails in the translation mechanism.
+         *
+         * @since 1.6
+         *
+         * @param string[] $actions Array of actions used to send emails.
+         * @return string[]
+         */
+        public function filter_order_email_actions($actions)
         {
         }
         /**
@@ -3499,6 +3873,8 @@ namespace {
          * Hooked to the action 'wp_loaded'.
          *
          * @since 0.6
+         *
+         * @return void
          */
         public function custom_columns()
         {
@@ -3510,6 +3886,7 @@ namespace {
          * @since 0.6
          *
          * @param string $post_type Post type.
+         * @return void
          */
         public function add_meta_boxes($post_type)
         {
@@ -3520,6 +3897,8 @@ namespace {
          * Hooked to the action 'change_locale'.
          *
          * @since 1.0
+         *
+         * @return void
          */
         public function change_locale()
         {
@@ -3531,6 +3910,7 @@ namespace {
          * @since 0.6
          *
          * @param int $post_id Booking ID.
+         * @return void
          */
         public function before_booking_metabox_save($post_id)
         {
@@ -3541,6 +3921,8 @@ namespace {
          * Hooked to the action 'woocommerce_booking_process_meta'.
          *
          * @since 0.6
+         *
+         * @return void
          */
         public function after_booking_metabox_save()
         {
@@ -3552,6 +3934,7 @@ namespace {
          * @since 0.6
          *
          * @param int $booking_id Booking ID.
+         * @return void
          */
         public function new_booking($booking_id)
         {
@@ -3564,6 +3947,7 @@ namespace {
          * @since 0.7.3
          *
          * @param int $booking_id Booking ID.
+         * @return void
          */
         public function set_booking_language_at_checkout($booking_id)
         {
@@ -3576,10 +3960,9 @@ namespace {
          * @param array  $post Bookable post to copy (person or resource).
          * @param int    $to   id of the product to which we paste informations.
          * @param string $lang Language slug.
-         * @param bool   $sync True if it is synchronization, false if it is a copy, defaults to false.
          * @return int Translated bookable post.
          */
-        protected function copy_bookable_post($post, $to, $lang, $sync)
+        protected function copy_bookable_post($post, $to, $lang)
         {
         }
         /**
@@ -3591,9 +3974,9 @@ namespace {
          * @param int    $from ID of the product from which we copy informations.
          * @param int    $to   ID of the product to which we paste informations.
          * @param string $lang Language slug.
-         * @param bool   $sync True if it is synchronization, false if it is a copy, defaults to false.
+         * @return void
          */
-        public function copy_resources($from, $to, $lang, $sync = \false)
+        public function copy_resources($from, $to, $lang)
         {
         }
         /**
@@ -3605,9 +3988,9 @@ namespace {
          * @param int    $from ID of the product from which we copy informations.
          * @param int    $to   ID of the product to which we paste informations.
          * @param string $lang Language slug.
-         * @param bool   $sync True if it is synchronization, false if it is a copy, defaults to false.
+         * @return void
          */
-        public function copy_persons($from, $to, $lang, $sync = \false)
+        public function copy_persons($from, $to, $lang)
         {
         }
         /**
@@ -3615,6 +3998,8 @@ namespace {
          * Hooked to the action 'wp_ajax_woocommerce_remove_bookable_resource'.
          *
          * @since 0.6
+         *
+         * @return void
          */
         public function remove_bookable_resource()
         {
@@ -3624,6 +4009,8 @@ namespace {
          * Hooked to the action 'wp_ajax_woocommerce_remove_bookable_person'.
          *
          * @since 0.6
+         *
+         * @return void
          */
         public function remove_bookable_person()
         {
@@ -3636,6 +4023,7 @@ namespace {
          * @param int    $post_id      New product or resource.
          * @param array  $translations Existing product or resource translations.
          * @param string $meta_key     Meta to add to the booking.
+         * @return void
          */
         protected function add_metas_to_booking($post_id, $translations, $meta_key)
         {
@@ -3647,9 +4035,10 @@ namespace {
          *
          * @since 0.9.3
          *
-         * @param int    $post_id      Post id.
-         * @param object $post         Post object.
-         * @param array  $translations Post translations.
+         * @param int     $post_id      Post id.
+         * @param WP_Post $post         Post object.
+         * @param array   $translations Post translations.
+         * @return void
          */
         public function save_post($post_id, $post, $translations)
         {
@@ -3704,7 +4093,7 @@ namespace {
          * @param int       $post_id  Booking id.
          * @param string    $meta_key Meta key.
          * @param bool      $single   Whether a single meta value has been requested.
-         * @return null|bool
+         * @return mixed
          */
         public function get_post_metadata($r, $post_id, $meta_key, $single)
         {
@@ -3715,14 +4104,10 @@ namespace {
          *
          * @since 0.6
          *
-         * @param array  $metas List of custom fields names.
-         * @param bool   $sync  True if it is synchronization, false if it is a copy.
-         * @param int    $from  Id of the post from which we copy informations, optional, defaults to null.
-         * @param int    $to    Id of the post to which we paste informations, optional, defaults to null.
-         * @param string $lang  Language slug, optional, defaults to null.
-         * @return array
+         * @param string[] $metas List of custom fields names.
+         * @return string[]
          */
-        public function copy_post_metas($metas, $sync, $from, $to, $lang)
+        public function copy_post_metas($metas)
         {
         }
         /**
@@ -3772,7 +4157,8 @@ namespace {
          *
          * @since 0.6
          *
-         * @param object $query WP_Query object.
+         * @param WP_Query $query WP_Query object.
+         * @return void
          */
         public function filter_bookings_notifications($query)
         {
@@ -3808,7 +4194,8 @@ namespace {
          *
          * @since 0.6
          *
-         * @param object $query WP_Query object.
+         * @param WP_Query $query WP_Query object.
+         * @return void
          */
         public function parse_query($query)
         {
@@ -3849,8 +4236,8 @@ namespace {
          *
          * @since 1.3
          *
-         * @param array $metas List of custom fields names.
-         * @return array
+         * @param string[] $metas List of custom fields names.
+         * @return string[]
          */
         public function copy_product_metas($metas)
         {
@@ -3877,8 +4264,8 @@ namespace {
          * @param array  $value Meta value.
          * @param string $key   Meta key.
          * @param string $lang  Target language.
-         * @param string $from  Source product id.
-         * @param string $to    Target product id.
+         * @param int    $from  Source product id.
+         * @param int    $to    Target product id.
          * @return array
          */
         public function translate_product_meta($value, $key, $lang, $from, $to)
@@ -3918,6 +4305,7 @@ namespace {
          *
          * @param array  $item Cart item.
          * @param string $key  Previous cart item key. The new key can be found in $item['key'].
+         * @return void
          */
         public function translated_cart_item($item, $key)
         {
@@ -3929,11 +4317,10 @@ namespace {
          *
          * @since 1.3
          *
-         * @param array  $contents Cart contents.
-         * @param string $lang     Language code.
+         * @param array $contents Cart contents.
          * @return array
          */
-        public function translate_cart_contents($contents, $lang)
+        public function translate_cart_contents($contents)
         {
         }
         /**
@@ -3941,6 +4328,8 @@ namespace {
          * Hooked to the action 'woocommerce_cart_loaded_from_session'.
          *
          * @since 1.3
+         *
+         * @return void
          */
         public function cart_loaded_from_session()
         {
@@ -4057,9 +4446,9 @@ namespace {
          *
          * @since 0.9
          *
-         * @param array $types List of post type names for which Polylang manages language and translations.
-         * @param bool  $hide  True when displaying the list in Polylang settings.
-         * @return array List of post type names for which Polylang manages language and translations.
+         * @param string[] $types List of post type names for which Polylang manages language and translations.
+         * @param bool     $hide  True when displaying the list in Polylang settings.
+         * @return string[] List of post type names for which Polylang manages language and translations.
          */
         public function translate_types($types, $hide)
         {
@@ -4070,8 +4459,8 @@ namespace {
          *
          * @since 0.9
          *
-         * @param array $taxonomies List of taxonomies to Synchronize.
-         * @return array Modified list of taxonomies.
+         * @param string[] $taxonomies List of taxonomies to Synchronize.
+         * @return string[] Modified list of taxonomies.
          */
         public function copy_taxonomies($taxonomies)
         {
@@ -4082,10 +4471,10 @@ namespace {
          *
          * @since 0.9
          *
-         * @param array $keys List of custom fields names.
-         * @param bool  $sync True if it is synchronization, false if it is a copy.
-         * @param int   $from Id of the post from which we copy informations.
-         * @return array
+         * @param string[] $keys List of custom fields names.
+         * @param bool     $sync True if it is synchronization, false if it is a copy.
+         * @param int      $from Id of the post from which we copy informations.
+         * @return string[]
          */
         public function copy_post_metas($keys, $sync, $from)
         {
@@ -4111,7 +4500,8 @@ namespace {
          *
          * @since 0.9
          *
-         * @param object $query WP_Query object.
+         * @param WP_Query $query WP_Query object.
+         * @return void
          */
         public function parse_query($query)
         {
@@ -4134,7 +4524,7 @@ namespace {
          * @since 0.9
          *
          * @param array $data Email order data.
-         * @return $data
+         * @return array
          */
         public function insert_email_order($data)
         {
@@ -4161,6 +4551,7 @@ namespace {
          * @param string $message    Email message.
          * @param string $headers    Email headers.
          * @param object $queue_item Email queue item.
+         * @return void
          */
         public function before_email_send($subject, $message, $headers, $queue_item)
         {
@@ -4276,6 +4667,12 @@ namespace {
     class PLLWC_Mix_Match
     {
         /**
+         * An array of translated cart keys.
+         *
+         * @var array
+         */
+        private $translated_cart_keys;
+        /**
          * Constructor.
          * Setup filters.
          *
@@ -4290,8 +4687,8 @@ namespace {
          *
          * @since 1.1
          *
-         * @param array $metas List of custom fields names.
-         * @return array
+         * @param string[] $metas List of custom fields names.
+         * @return string[]
          */
         public function copy_product_metas($metas)
         {
@@ -4345,6 +4742,7 @@ namespace {
          *
          * @param array  $item Cart item.
          * @param string $key  Previous cart item key. The new key can be found in $item['key'].
+         * @return void
          */
         public function translated_cart_item($item, $key)
         {
@@ -4356,11 +4754,10 @@ namespace {
          *
          * @since 1.1
          *
-         * @param array  $contents Cart contents.
-         * @param string $lang     Language code.
+         * @param array $contents Cart contents.
          * @return array
          */
-        public function translate_cart_contents($contents, $lang)
+        public function translate_cart_contents($contents)
         {
         }
         /**
@@ -4369,6 +4766,8 @@ namespace {
          * Hooked to the action 'woocommerce_cart_loaded_from_session'.
          *
          * @since 1.1
+         *
+         * @return void
          */
         public function cart_loaded_from_session()
         {
@@ -4386,9 +4785,77 @@ namespace {
     class PLLWC_Plugins_Compat
     {
         /**
+         * @var PLLWC_Bookings
+         */
+        public $bookings;
+        /**
+         * @var PLLWC_Product_Bundles
+         */
+        public $bundles;
+        /**
+         * @var PLLWC_Composite_Products
+         */
+        public $composite;
+        /**
+         * @var PLLWC_Dynamic_Pricing
+         */
+        public $dynamic_pricing;
+        /**
+         * @var PLLWC_Free_Gift_Coupons
+         */
+        public $fgc;
+        /**
+         * @var PLLWC_Follow_Up_Emails
+         */
+        public $fue;
+        /**
+         * @var PLLWC_Min_Max_Quantities
+         */
+        public $min_max;
+        /**
+         * @var PLLWC_Mix_Match
+         */
+        public $mix_match;
+        /**
+         * @var PLLWC_Shipment_Tracking
+         */
+        public $shipment_tracking;
+        /**
+         * @var PLLWC_Stock_Manager
+         */
+        public $stock_manager;
+        /**
+         * @var PLLWC_Stripe
+         */
+        public $stripe;
+        /**
+         * @var PLLWC_Subscriptions
+         */
+        public $subscriptions;
+        /**
+         * @var PLLWC_Swatches
+         */
+        public $swatches;
+        /**
+         * @var PLLWC_Table_Rate_Shipping
+         */
+        public $table_rate_shipping;
+        /**
+         * @var PLLWC_WCFD
+         */
+        public $wcfd;
+        /**
+         * @var PLLWC_Yith_WCAS
+         */
+        public $yith_wcas;
+        /**
+         * @var PLLWC_Brands
+         */
+        public $brands;
+        /**
          * Singleton.
          *
-         * @var object PLLWC_Plugins_Compat instance.
+         * @var PLLWC_Plugins_Compat
          */
         protected static $instance;
         /**
@@ -4403,8 +4870,20 @@ namespace {
          * Init fired only when Polylang for WooCommerce object is initialized.
          *
          * @since 0.3.2
+         *
+         * @return void
          */
         public function init()
+        {
+        }
+        /**
+         * Initializes the compatibility with the plugin WooCommerce Brands.
+         *
+         * @since 1.6
+         *
+         * @return void
+         */
+        public function init_wc_brand()
         {
         }
         /**
@@ -4412,6 +4891,8 @@ namespace {
          * The first constant was used for versions < 1.3.6.
          *
          * @since 1.3
+         *
+         * @return void
          */
         public function maybe_init_wcfd()
         {
@@ -4420,6 +4901,8 @@ namespace {
          * Initializes the compatibility with the plugin WooCommerce Free Gift Coupons.
          *
          * @since 1.4
+         *
+         * @return void
          */
         public function maybe_init_fgc()
         {
@@ -4429,7 +4912,7 @@ namespace {
          *
          * @since 0.3.2
          *
-         * @return object
+         * @return PLLWC_Plugins_Compat
          */
         public static function instance()
         {
@@ -4456,6 +4939,12 @@ namespace {
          */
         protected $translated_cart_keys;
         /**
+         * An array of cart item stamp.
+         *
+         * @var array
+         */
+        private $stamps;
+        /**
          * Constructor.
          * Setups actions and filters.
          *
@@ -4474,6 +4963,7 @@ namespace {
          * @param int    $to   id of the post to which we paste informations.
          * @param string $lang language slug.
          * @param bool   $sync true if it is synchronization, false if it is a copy, defaults to false.
+         * @return void
          */
         public function copy_product($from, $to, $lang, $sync = \false)
         {
@@ -4484,8 +4974,8 @@ namespace {
          *
          * @since 1.1
          *
-         * @param array $metas List of custom fields names.
-         * @return array
+         * @param string[] $metas List of custom fields names.
+         * @return string[]
          */
         public function copy_product_metas($metas)
         {
@@ -4537,6 +5027,7 @@ namespace {
          *
          * @param array  $item Cart item.
          * @param string $key  Previous cart item key. The new key can be found in $item['key'].
+         * @return void
          */
         public function translated_cart_item($item, $key)
         {
@@ -4548,11 +5039,10 @@ namespace {
          *
          * @since 1.1
          *
-         * @param array  $contents Cart contents.
-         * @param string $lang     Language code.
+         * @param array $contents Cart contents.
          * @return array
          */
-        public function translate_cart_contents($contents, $lang)
+        public function translate_cart_contents($contents)
         {
         }
         /**
@@ -4563,6 +5053,8 @@ namespace {
          * Hooked to the action 'woocommerce_cart_loaded_from_session'.
          *
          * @since 1.1
+         *
+         * @return void
          */
         public function cart_loaded_from_session()
         {
@@ -4592,6 +5084,8 @@ namespace {
          * Hooked to the action 'change_locale'.
          *
          * @since 1.0
+         *
+         * @return void
          */
         public function change_locale()
         {
@@ -4623,7 +5117,7 @@ namespace {
          *
          * @since 0.9
          *
-         * @param object $qvars Query vars.
+         * @param array $qvars Query vars.
          * @return bool
          */
         public function is_language_in_query($qvars)
@@ -4634,7 +5128,7 @@ namespace {
          *
          * @since 0.9
          *
-         * @param object $qvars Query vars.
+         * @param array $qvars Query vars.
          * @return bool
          */
         public function is_product_in_query($qvars)
@@ -4646,7 +5140,8 @@ namespace {
          *
          * @since 0.3.2
          *
-         * @param object $query WP_Query object.
+         * @param WP_Query $query WP_Query object.
+         * @return void
          */
         public function parse_query($query)
         {
@@ -4716,6 +5211,17 @@ namespace {
         {
         }
         /**
+         * Add Subscription e-mails in the translation mechanism.
+         *
+         * @since 1.6
+         *
+         * @param string[] $actions Array of actions used to send emails.
+         * @return string[]
+         */
+        public function filter_order_email_actions($actions)
+        {
+        }
+        /**
          * Copies or synchronizes metas.
          * Hooked to the filter 'pllwc_copy_post_metas'.
          *
@@ -4771,6 +5277,8 @@ namespace {
          * Hooked to the action 'wp_loaded'.
          *
          * @since 0.4
+         *
+         * @return void
          */
         public function custom_columns()
         {
@@ -4783,6 +5291,7 @@ namespace {
          * @since 0.4
          *
          * @param string $post_type Post type.
+         * @return void
          */
         public function add_meta_boxes($post_type)
         {
@@ -4792,6 +5301,8 @@ namespace {
          * Hooked to the action 'change_locale'.
          *
          * @since 1.0
+         *
+         * @return void
          */
         public function change_locale()
         {
@@ -4816,7 +5327,8 @@ namespace {
          *
          * @since 0.4
          *
-         * @param object $query WP_Query object.
+         * @param WP_Query $query WP_Query object.
+         * @return void
          */
         public function parse_query($query)
         {
@@ -4885,6 +5397,7 @@ namespace {
          * @since 1.3.3
          *
          * @param int $variation_id Subscription variation id.
+         * @return void
          */
         public function delete_variation($variation_id)
         {
@@ -4991,6 +5504,8 @@ namespace {
          * Registers all the labels in the strings translations.
          *
          * @since 0.5
+         *
+         * @return void
          */
         public function register_strings()
         {
@@ -5019,6 +5534,64 @@ namespace {
          * @return object
          */
         public function table_rate_query_rates($rates)
+        {
+        }
+    }
+    /**
+     * @package Polylang-WC
+     */
+    /**
+     * Manages the compatibility with WooCommerce Brands.
+     * Version tested: 1.6.24
+     *
+     * @since  1.6
+     *
+     * @link https://woocommerce.com/fr-fr/products/brands/
+     */
+    class PLLWC_Brands
+    {
+        /**
+         * PLLWC_Brands constructor.
+         *
+         * @since 1.6
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Synchronizes the thumbnail term meta.
+         * Hooked to the filter 'pll_copy_term_metas'.
+         *
+         * @since 1.6
+         *
+         * @param array $metas List of custom fields names.
+         * @param bool  $sync  True if it is synchronization, false if it is a copy.
+         * @param int   $from  Id of the product from which we copy informations.
+         * @return array
+         */
+        public function copy_term_metas($metas, $sync, $from)
+        {
+        }
+        /**
+         * Add Product Brand taxonomy to list of translated taxonomies
+         *
+         * @since 1.6
+         *
+         * @param string[] $taxonomies List of taxonomy names.
+         * @param bool     $is_settings True when displaying the list of custom taxonomies in Polylang settings.
+         *
+         * @return string[] List of taxonomy names.
+         */
+        public function add_taxonomy($taxonomies, $is_settings)
+        {
+        }
+        /**
+         * Allow thumbnail duplication on WC Brands. Remove the original thumbnail field, re-add it with original term_id.
+         *
+         * @since   1.6
+         * @return void
+         */
+        public function add_product_brand_fields()
         {
         }
     }
@@ -5063,6 +5636,8 @@ namespace {
          * Registers the strings.
          *
          * @since 1.3
+         *
+         * @return void
          */
         protected function register_strings()
         {
@@ -5121,159 +5696,113 @@ namespace {
     class Polylang_Woocommerce
     {
         /**
-         * Instance of PLLWC_Post_Types.
-         *
-         * @var object
-         */
-        public $post_types;
-        /**
-         * Instance of PLLWC_Links.
-         *
-         * @var object
-         */
-        public $links;
-        /**
-         * Instance of PLLWC_Stock.
-         *
-         * @var object
-         */
-        public $stock;
-        /**
-         * Instance of PLLWC_Emails.
-         *
-         * @var object
-         */
-        public $emails;
-        /**
-         * Instance of PLLWC_Strings.
-         *
-         * @var object
-         */
-        public $strings;
-        /**
-         * Instance of PLLWC_Xdata.
-         *
-         * @var object
-         */
-        public $data;
-        /**
-         * Instance of PLLWC_Export.
-         *
-         * @var object
-         */
-        public $export;
-        /**
-         * Instance of PLLWC_Import.
-         *
-         * @var object
-         */
-        public $import;
-        /**
-         * Instance of PLLWC_REST_API.
-         *
-         * @var object
-         */
-        public $rest_api;
-        /**
-         * Instance of PLLWC_Sync_Content.
-         *
-         * @var object
-         */
-        public $sync_content;
-        /**
-         * Instance of PLLWC_Frontend.
-         *
-         * @var object
-         */
-        public $frontend;
-        /**
-         * Instance of PLLWC_Frontend_Cart.
-         *
-         * @var object
-         */
-        public $cart;
-        /**
-         * Instance of PLLWC_Frontend_Account.
-         *
-         * @var object
-         */
-        public $my_account;
-        /**
-         * Instance of PLLWC_Coupons.
-         *
-         * @var object
-         */
-        public $coupons;
-        /**
-         * Instance of PLLWC_Frontend_WC_Pages.
-         *
-         * @var object
-         */
-        public $wc_pages;
-        /**
-         * Instance of PLLWC_Admin_WC_Install.
-         *
-         * @var object
-         */
-        public $admin_wc_install;
-        /**
-         * Instance of PLLWC_Admin_Taxonomies.
-         *
-         * @var object
-         */
-        public $admin_taxonomies;
-        /**
-         * Instance of PLLWC_Admin_Products.
-         *
-         * @var object
-         */
-        public $admin_products;
-        /**
-         * Instance of PLLWC_Admin_Product_Duplicate.
-         *
-         * @var object
-         */
-        public $admin_product_duplicate;
-        /**
-         * Instance of PLLWC_Admin_Orders.
-         *
-         * @var object
-         */
-        public $admin_orders;
-        /**
-         * Instance of PLLWC_Admin_Reports.
-         *
-         * @var object
-         */
-        public $admin_reports;
-        /**
-         * Instance of PLLWC_Admin_Status_Reports.
-         *
-         * @var object
-         */
-        public $admin_status_reports;
-        /**
-         * Instance of PLLWC_Admin_Menus.
-         *
-         * @var object
+         * @var PLLWC_Admin_Menus
          */
         public $admin_menus;
         /**
-         * Instance of PLL_Wizard.
-         *
-         * @var object
+         * @var PLLWC_Admin_Products
          */
-        public $wizard;
+        public $admin_products;
         /**
-         * Instance of PLLWC_Admin_Product_Duplicate.
-         *
-         * @var object
+         * @var PLLWC_Admin_Product_Duplicate
+         */
+        public $admin_product_duplicate;
+        /**
+         * @var PLLWC_Admin_Orders
+         */
+        public $admin_orders;
+        /**
+         * @var PLLWC_Admin_Reports
+         */
+        public $admin_reports;
+        /**
+         * @var PLLWC_Admin_Status_Reports
+         */
+        public $admin_status_reports;
+        /**
+         * @var PLLWC_Admin_Taxonomies
+         */
+        public $admin_taxonomies;
+        /**
+         * @var PLLWC_Admin_WC_Install
+         */
+        public $admin_wc_install;
+        /**
+         * @var PLLWC_Frontend_Cart
+         */
+        public $cart;
+        /**
+         * @var PLLWC_Coupons
+         */
+        public $coupons;
+        /**
+         * @var PLLWC_Xdata
+         */
+        public $data;
+        /**
+         * @var PLLWC_Emails
+         */
+        public $emails;
+        /**
+         * @var PLLWC_Export
+         */
+        public $export;
+        /**
+         * @var PLLWC_Frontend
+         */
+        public $frontend;
+        /**
+         * @var PLLWC_Import
+         */
+        public $import;
+        /**
+         * @var PLLWC_Links
+         */
+        public $links;
+        /**
+         * @var PLLWC_Frontend_Account
+         */
+        public $my_account;
+        /**
+         * @var PLLWC_Post_Types
+         */
+        public $post_types;
+        /**
+         * @var PLLWC_Products
+         */
+        public $products;
+        /**
+         * @var PLLWC_REST_API
+         */
+        public $rest_api;
+        /**
+         * @var PLLWC_Admin_Site_Health
          */
         public $site_health;
         /**
+         * @var PLLWC_Stock
+         */
+        public $stock;
+        /**
+         * @var PLLWC_Strings
+         */
+        public $strings;
+        /**
+         * @var PLLWC_Sync_Content
+         */
+        public $sync_content;
+        /**
+         * @var PLLWC_Frontend_WC_Pages
+         */
+        public $wc_pages;
+        /**
+         * @var PLLWC_Wizard
+         */
+        public $wizard;
+        /**
          * Singleton.
          *
-         * @var object Instance of Polylang_Woocommerce.
+         * @var Polylang_Woocommerce
          */
         protected static $instance;
         /**
@@ -5289,7 +5818,7 @@ namespace {
          *
          * @since 0.1
          *
-         * @return object
+         * @return Polylang_Woocommerce
          */
         public static function instance()
         {
@@ -5309,6 +5838,8 @@ namespace {
          * Initializes the plugin.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function init()
         {
@@ -5317,6 +5848,8 @@ namespace {
          * Displays an admin notice if Polylang is not at the right version.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function admin_notices()
         {
@@ -5325,6 +5858,8 @@ namespace {
          * Manages updates of the plugin.
          *
          * @since 0.9.3
+         *
+         * @return void
          */
         public function maybe_upgrade()
         {
@@ -5345,6 +5880,7 @@ namespace {
          * @since 0.4.5
          *
          * @param int $product_id Product ID.
+         * @return void
          */
         public function delete_product_transients($product_id)
         {
@@ -5353,6 +5889,8 @@ namespace {
          * Enqueues the stylesheet.
          *
          * @since 0.1
+         *
+         * @return void
          */
         public function admin_enqueue_scripts()
         {
@@ -5364,6 +5902,7 @@ namespace {
          *
          * @param string $plugin_name  Plugin basename.
          * @param bool   $network_wide If activated for all sites in the network.
+         * @return void
          */
         public static function activated_plugin($plugin_name, $network_wide)
         {
@@ -5411,7 +5950,7 @@ namespace {
 namespace Composer\Autoload {
     class ComposerStaticInite0d4d2a689cdab58e083e97ea06bb2b0
     {
-        public static $classMap = array('PLLWC_Admin' => __DIR__ . '/../..' . '/admin/admin.php', 'PLLWC_Admin_Coupons' => __DIR__ . '/../..' . '/admin/admin-coupons.php', 'PLLWC_Admin_Menus' => __DIR__ . '/../..' . '/admin/admin-menus.php', 'PLLWC_Admin_Orders' => __DIR__ . '/../..' . '/admin/admin-orders.php', 'PLLWC_Admin_Product_Duplicate' => __DIR__ . '/../..' . '/admin/admin-product-duplicate.php', 'PLLWC_Admin_Products' => __DIR__ . '/../..' . '/admin/admin-products.php', 'PLLWC_Admin_Reports' => __DIR__ . '/../..' . '/admin/admin-reports.php', 'PLLWC_Admin_Site_Health' => __DIR__ . '/../..' . '/admin/admin-site-health.php', 'PLLWC_Admin_Status_Reports' => __DIR__ . '/../..' . '/admin/admin-status-reports.php', 'PLLWC_Admin_Taxonomies' => __DIR__ . '/../..' . '/admin/admin-taxonomies.php', 'PLLWC_Admin_WC_Install' => __DIR__ . '/../..' . '/admin/admin-wc-install.php', 'PLLWC_Bookings' => __DIR__ . '/../..' . '/plugins/bookings.php', 'PLLWC_Composite_Products' => __DIR__ . '/../..' . '/plugins/composite-products.php', 'PLLWC_Coupons' => __DIR__ . '/../..' . '/include/coupons.php', 'PLLWC_Data_Store' => __DIR__ . '/../..' . '/include/data-store.php', 'PLLWC_Dynamic_Pricing' => __DIR__ . '/../..' . '/plugins/dynamic-pricing.php', 'PLLWC_Emails' => __DIR__ . '/../..' . '/include/emails.php', 'PLLWC_Export' => __DIR__ . '/../..' . '/include/export.php', 'PLLWC_Follow_Up_Emails' => __DIR__ . '/../..' . '/plugins/follow-up-emails.php', 'PLLWC_Free_Gift_Coupons' => __DIR__ . '/../..' . '/plugins/free-gift-coupons.php', 'PLLWC_Frontend' => __DIR__ . '/../..' . '/frontend/frontend.php', 'PLLWC_Frontend_Account' => __DIR__ . '/../..' . '/frontend/frontend-account.php', 'PLLWC_Frontend_Cart' => __DIR__ . '/../..' . '/frontend/frontend-cart.php', 'PLLWC_Frontend_WC_Pages' => __DIR__ . '/../..' . '/frontend/frontend-wc-pages.php', 'PLLWC_Import' => __DIR__ . '/../..' . '/include/import.php', 'PLLWC_Install' => __DIR__ . '/../..' . '/include/install.php', 'PLLWC_Links' => __DIR__ . '/../..' . '/include/links.php', 'PLLWC_Links_Pro' => __DIR__ . '/../..' . '/include/links-pro.php', 'PLLWC_Min_Max_Quantities' => __DIR__ . '/../..' . '/plugins/min-max-quantities.php', 'PLLWC_Mix_Match' => __DIR__ . '/../..' . '/plugins/mix-match.php', 'PLLWC_Object_Language_CPT' => __DIR__ . '/../..' . '/include/object-language-cpt.php', 'PLLWC_Order_Language_CPT' => __DIR__ . '/../..' . '/include/order-language-cpt.php', 'PLLWC_Plugins_Compat' => __DIR__ . '/../..' . '/plugins/plugins-compat.php', 'PLLWC_Post_Types' => __DIR__ . '/../..' . '/include/post-types.php', 'PLLWC_Product_Bundles' => __DIR__ . '/../..' . '/plugins/product-bundles.php', 'PLLWC_Product_Data_Store_CPT' => __DIR__ . '/../..' . '/include/product-data-store-cpt.php', 'PLLWC_Product_Language_CPT' => __DIR__ . '/../..' . '/include/product-language-cpt.php', 'PLLWC_Products' => __DIR__ . '/../..' . '/include/products.php', 'PLLWC_REST_API' => __DIR__ . '/../..' . '/include/rest-api.php', 'PLLWC_REST_Order' => __DIR__ . '/../..' . '/include/rest-order.php', 'PLLWC_REST_Product' => __DIR__ . '/../..' . '/include/rest-product.php', 'PLLWC_Shipment_Tracking' => __DIR__ . '/../..' . '/plugins/shipment-tracking.php', 'PLLWC_Stock' => __DIR__ . '/../..' . '/include/stock.php', 'PLLWC_Stock_Manager' => __DIR__ . '/../..' . '/plugins/stock-manager.php', 'PLLWC_Strings' => __DIR__ . '/../..' . '/include/strings.php', 'PLLWC_Stripe' => __DIR__ . '/../..' . '/plugins/stripe.php', 'PLLWC_Subscriptions' => __DIR__ . '/../..' . '/plugins/subscriptions.php', 'PLLWC_Swatches' => __DIR__ . '/../..' . '/plugins/swatches.php', 'PLLWC_Sync_Content' => __DIR__ . '/../..' . '/include/sync-content.php', 'PLLWC_Table_Rate_Shipping' => __DIR__ . '/../..' . '/plugins/table-rate-shipping.php', 'PLLWC_Translated_Object_Language_CPT' => __DIR__ . '/../..' . '/include/translated-object-language-cpt.php', 'PLLWC_WCFD' => __DIR__ . '/../..' . '/plugins/wcfd.php', 'PLLWC_Wizard' => __DIR__ . '/../..' . '/admin/wizard.php', 'PLLWC_Xdata' => __DIR__ . '/../..' . '/include/xdata.php', 'PLLWC_Xdata_Session_Manager' => __DIR__ . '/../..' . '/include/xdata-session-manager.php', 'PLLWC_Yith_WCAS' => __DIR__ . '/../..' . '/plugins/yith-wcas.php');
+        public static $classMap = array('PLLWC_Admin' => __DIR__ . '/../..' . '/admin/admin.php', 'PLLWC_Admin_Coupons' => __DIR__ . '/../..' . '/admin/admin-coupons.php', 'PLLWC_Admin_Menus' => __DIR__ . '/../..' . '/admin/admin-menus.php', 'PLLWC_Admin_Orders' => __DIR__ . '/../..' . '/admin/admin-orders.php', 'PLLWC_Admin_Product_Duplicate' => __DIR__ . '/../..' . '/admin/admin-product-duplicate.php', 'PLLWC_Admin_Products' => __DIR__ . '/../..' . '/admin/admin-products.php', 'PLLWC_Admin_Reports' => __DIR__ . '/../..' . '/admin/admin-reports.php', 'PLLWC_Admin_Site_Health' => __DIR__ . '/../..' . '/admin/admin-site-health.php', 'PLLWC_Admin_Status_Reports' => __DIR__ . '/../..' . '/admin/admin-status-reports.php', 'PLLWC_Admin_Taxonomies' => __DIR__ . '/../..' . '/admin/admin-taxonomies.php', 'PLLWC_Admin_WC_Install' => __DIR__ . '/../..' . '/admin/admin-wc-install.php', 'PLLWC_Bookings' => __DIR__ . '/../..' . '/plugins/bookings.php', 'PLLWC_Brands' => __DIR__ . '/../..' . '/plugins/wc-brands.php', 'PLLWC_Composite_Products' => __DIR__ . '/../..' . '/plugins/composite-products.php', 'PLLWC_Coupons' => __DIR__ . '/../..' . '/include/coupons.php', 'PLLWC_Data_Store' => __DIR__ . '/../..' . '/include/data-store.php', 'PLLWC_Dynamic_Pricing' => __DIR__ . '/../..' . '/plugins/dynamic-pricing.php', 'PLLWC_Emails' => __DIR__ . '/../..' . '/include/emails.php', 'PLLWC_Export' => __DIR__ . '/../..' . '/include/export.php', 'PLLWC_Follow_Up_Emails' => __DIR__ . '/../..' . '/plugins/follow-up-emails.php', 'PLLWC_Free_Gift_Coupons' => __DIR__ . '/../..' . '/plugins/free-gift-coupons.php', 'PLLWC_Frontend' => __DIR__ . '/../..' . '/frontend/frontend.php', 'PLLWC_Frontend_Account' => __DIR__ . '/../..' . '/frontend/frontend-account.php', 'PLLWC_Frontend_Cart' => __DIR__ . '/../..' . '/frontend/frontend-cart.php', 'PLLWC_Frontend_WC_Pages' => __DIR__ . '/../..' . '/frontend/frontend-wc-pages.php', 'PLLWC_Import' => __DIR__ . '/../..' . '/include/import.php', 'PLLWC_Install' => __DIR__ . '/../..' . '/include/install.php', 'PLLWC_Links' => __DIR__ . '/../..' . '/include/links.php', 'PLLWC_Links_Pro' => __DIR__ . '/../..' . '/include/links-pro.php', 'PLLWC_Min_Max_Quantities' => __DIR__ . '/../..' . '/plugins/min-max-quantities.php', 'PLLWC_Mix_Match' => __DIR__ . '/../..' . '/plugins/mix-match.php', 'PLLWC_Object_Language_CPT' => __DIR__ . '/../..' . '/include/object-language-cpt.php', 'PLLWC_Order_Language_CPT' => __DIR__ . '/../..' . '/include/order-language-cpt.php', 'PLLWC_Plugins_Compat' => __DIR__ . '/../..' . '/plugins/plugins-compat.php', 'PLLWC_Post_Types' => __DIR__ . '/../..' . '/include/post-types.php', 'PLLWC_Product_Bundles' => __DIR__ . '/../..' . '/plugins/product-bundles.php', 'PLLWC_Product_Data_Store_CPT' => __DIR__ . '/../..' . '/include/product-data-store-cpt.php', 'PLLWC_Product_Language_CPT' => __DIR__ . '/../..' . '/include/product-language-cpt.php', 'PLLWC_Products' => __DIR__ . '/../..' . '/include/products.php', 'PLLWC_REST_API' => __DIR__ . '/../..' . '/include/rest-api.php', 'PLLWC_REST_Order' => __DIR__ . '/../..' . '/include/rest-order.php', 'PLLWC_REST_Product' => __DIR__ . '/../..' . '/include/rest-product.php', 'PLLWC_Shipment_Tracking' => __DIR__ . '/../..' . '/plugins/shipment-tracking.php', 'PLLWC_Stock' => __DIR__ . '/../..' . '/include/stock.php', 'PLLWC_Stock_Manager' => __DIR__ . '/../..' . '/plugins/stock-manager.php', 'PLLWC_Strings' => __DIR__ . '/../..' . '/include/strings.php', 'PLLWC_Stripe' => __DIR__ . '/../..' . '/plugins/stripe.php', 'PLLWC_Subscriptions' => __DIR__ . '/../..' . '/plugins/subscriptions.php', 'PLLWC_Swatches' => __DIR__ . '/../..' . '/plugins/swatches.php', 'PLLWC_Sync_Content' => __DIR__ . '/../..' . '/include/sync-content.php', 'PLLWC_Table_Rate_Shipping' => __DIR__ . '/../..' . '/plugins/table-rate-shipping.php', 'PLLWC_Translated_Object_Language_CPT' => __DIR__ . '/../..' . '/include/translated-object-language-cpt.php', 'PLLWC_Variation_Data_Store_CPT' => __DIR__ . '/../..' . '/include/variation-data-store-cpt.php', 'PLLWC_WCFD' => __DIR__ . '/../..' . '/plugins/wcfd.php', 'PLLWC_Wizard' => __DIR__ . '/../..' . '/admin/wizard.php', 'PLLWC_Xdata' => __DIR__ . '/../..' . '/include/xdata.php', 'PLLWC_Xdata_Session_Manager' => __DIR__ . '/../..' . '/include/xdata-session-manager.php', 'PLLWC_Yith_WCAS' => __DIR__ . '/../..' . '/plugins/yith-wcas.php');
         public static function getInitializer(\Composer\Autoload\ClassLoader $loader)
         {
         }
@@ -5426,12 +5965,12 @@ namespace {
      *
      * @since 0.1
      *
-     * @param string $tag           Hook name.
-     * @param array  $method        [0] => class name, [1] => method name.
-     * @param int    $priority      Hook priority, defaults to 10.
-     * @param int    $accepted_args Not used.
+     * @param string $tag      Hook name.
+     * @param array  $method   [0] => class name, [1] => method name.
+     * @param int    $priority Hook priority, defaults to 10.
+     * @return void
      */
-    function pll_remove_anonymous_object_filter($tag, $method, $priority = 10, $accepted_args = 1)
+    function pll_remove_anonymous_object_filter($tag, $method, $priority = 10)
     {
     }
     /**
@@ -5441,18 +5980,20 @@ namespace {
      *
      * @since 0.1
      *
-     * @param string $tag           Hook name.
-     * @param array  $method        [0] => class name, [1] => method name.
-     * @param int    $priority      Hook priority, defaults to 10.
-     * @param int    $accepted_args Not used.
+     * @param string $tag      Hook name.
+     * @param array  $method   [0] => class name, [1] => method name.
+     * @param int    $priority Hook priority, defaults to 10.
+     * @return object|null
      */
-    function pll_get_anonymous_object_from_filter($tag, $method, $priority = 10, $accepted_args = 1)
+    function pll_get_anonymous_object_from_filter($tag, $method, $priority = 10)
     {
     }
     /**
      * Returns the Polylang for WooCommerce instance.
      *
      * @since 0.1
+     *
+     * @return Polylang_Woocommerce
      */
     function PLLWC()
     {
