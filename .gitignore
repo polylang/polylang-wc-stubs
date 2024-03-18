@@ -1,4 +1,5 @@
 /vendor
 /polylang-wc
 .DS_Store
+composer.lock
 LICENSE-CODE

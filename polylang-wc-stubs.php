@@ -170,8 +170,9 @@ namespace {
      * Handles the language information displayed for orders.
      *
      * @since 0.1
+     * @since 1.9 Changed the class to abstract.
      */
-    class PLLWC_Admin_Orders
+    abstract class PLLWC_Admin_Orders
     {
         /**
          * Order language data store.
@@ -188,16 +189,13 @@ namespace {
         {
         }
         /**
-         * Removes the standard Polylang languages columns for the orders list table
-         * and replace them with one unique column.
+         * Adds the language columns to the orders list table.
          *
          * @since 0.1
          *
          * @return void
          */
-        public function custom_columns()
-        {
-        }
+        public abstract function custom_columns();
         /**
          * Adds the language column in the orders list table.
          *
@@ -213,12 +211,13 @@ namespace {
          * Fills the language column of each order.
          *
          * @since 0.1
+         * @since 1.9 The second param has been renamed to `$order` and accepts `WC_Order` and `int`.
          *
-         * @param string $column  Column name.
-         * @param int    $post_id Order ID.
+         * @param string       $column Column name.
+         * @param WC_Order|int $order  Order object when using HPOS, or order ID otherwise.
          * @return void
          */
-        public function order_column($column, $post_id)
+        public function order_column($column, $order)
         {
         }
         /**
@@ -227,10 +226,10 @@ namespace {
          *
          * @since 0.1
          *
-         * @param string $post_type Post type name.
+         * @param string $screen_id Screen id of the order edit page.
          * @return void
          */
-        public function add_meta_boxes($post_type)
+        public function add_meta_boxes($screen_id)
         {
         }
         /**
@@ -238,9 +237,19 @@ namespace {
          *
          * @since 0.1
          *
+         * @param object $order Order object.
          * @return void
          */
-        public function order_language()
+        public abstract function order_language($order);
+        /**
+         * Displays the Languages metabox.
+         *
+         * @since 1.9
+         *
+         * @param int $order_id Order id.
+         * @return void
+         */
+        protected function display_language_metabox($order_id)
         {
         }
         /**
@@ -252,6 +261,153 @@ namespace {
          * @return array
          */
         public function admin_order_actions($actions)
+        {
+        }
+        /**
+         * Checks if the current screen is allowed.
+         *
+         * @since 1.9
+         *
+         * @param string $screen_id Optional screen id, defaults to the current screen.
+         * @return bool
+         */
+        protected function is_allowed_screen($screen_id = '')
+        {
+        }
+        /**
+         * Returns a list of allowed screens.
+         *
+         * @since 1.9
+         *
+         * @return string[]
+         */
+        protected function get_allowed_screens()
+        {
+        }
+    }
+    /**
+     * @package Polylang-WC
+     */
+    /**
+     * Handles the language information displayed for orders when using HPOS.
+     *
+     * @since 1.9
+     */
+    class PLLWC_Admin_Orders_HPOS extends \PLLWC_Admin_Orders
+    {
+        /**
+         * Constructor.
+         *
+         * @since 1.9
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Adds the language columns to the orders list table.
+         *
+         * @since 1.9
+         *
+         * @return void
+         */
+        public function custom_columns()
+        {
+        }
+        /**
+         * Displays the Languages metabox in HPOS context.
+         *
+         * @since 1.9
+         *
+         * @param WC_Order $order Order object.
+         * @return void
+         */
+        public function order_language($order)
+        {
+        }
+        /**
+         * Returns a list of allowed screens.
+         *
+         * @since 1.9
+         *
+         * @return string[]
+         */
+        protected function get_allowed_screens()
+        {
+        }
+        /**
+         * Add pll_order_id parameter in the list of parameters of the admin ajax request.
+         *
+         * @since 1.9
+         *
+         * @param array $params List of parameters to add to the admin ajax request.
+         * @return array Modified list of parameters to add to the admin ajax request.
+         */
+        public function set_pll_order_id($params)
+        {
+        }
+        /**
+         * Sets the current language in order screen when using HPOS.
+         *
+         * @since 1.9
+         *
+         * @param PLL_Language|bool $current_language The current language already set.
+         * @return PLL_Language|bool
+         */
+        public function set_current_language($current_language)
+        {
+        }
+        /**
+         * Saves order language from admin when HPOS is enabled and order custom tables authoritative.
+         *
+         * @since 1.9
+         *
+         * @param WC_Order $order Order object being saved.
+         * @return void
+         */
+        public function save_order_language($order)
+        {
+        }
+        /**
+         * Enqueues order edit page script.
+         *
+         * @since 1.9
+         *
+         * @return void
+         */
+        public function enqueue_order_script()
+        {
+        }
+    }
+    /**
+     * @package Polylang-WC
+     */
+    /**
+     * Handles the language information displayed for orders hen using legacy orders
+     *
+     * @since 1.9
+     */
+    class PLLWC_Admin_Orders_Legacy extends \PLLWC_Admin_Orders
+    {
+        /**
+         * Removes the standard Polylang languages columns for the orders list table
+         * and replace them with one unique column.
+         *
+         * @since 0.1
+         *
+         * @return void
+         */
+        public function custom_columns()
+        {
+        }
+        /**
+         * Displays the Languages metabox.
+         *
+         * @since 0.1
+         *
+         * @param WP_Post $order Order object.
+         * @return void
+         */
+        public function order_language($order)
         {
         }
     }
@@ -575,6 +731,7 @@ namespace {
         protected $woocommerce_pages_status = \null;
         /**
          * Retrieves the status of the WooCommerce pages.
+         * Partially copied from {@see WC_REST_System_Status_V2_Controller::get_pages()}.
          *
          * @since 1.3
          *
@@ -1042,6 +1199,42 @@ namespace {
         {
         }
         /**
+         * In frontend, forces the queries in the "My account => Orders" tab to fetch orders in all languages by adding
+         * a filter (refunds, etc). This is used when HPOS is enabled because `WP_Query` is not used in this context (so
+         * {@see PLLWC_Frontend_Account::parse_query()} has no effects).
+         * Hooked to `woocommerce_account_content` at very low priority.
+         *
+         * @since 1.9
+         *
+         * @return void
+         */
+        public function add_language_filter_before_account_orders()
+        {
+        }
+        /**
+         * Removes the filter added by {@see PLLWC_Frontend_Account::add_language_filter_before_account_orders()}.
+         * Hooked to woocommerce_account_content` at very high priority.
+         *
+         * @since 1.9
+         *
+         * @return void
+         */
+        public function remove_language_filter_after_account_orders()
+        {
+        }
+        /**
+         * In frontend, forces the "My account => Orders" tab to display orders in all languages.
+         * Hooked to `woocommerce_order_query_args` in {@see PLLWC_Frontend_Account::add_language_filter_before_account_orders()}.
+         *
+         * @since 1.9
+         *
+         * @param array $query The query array.
+         * @return array
+         */
+        public function add_language_query_arg_in_account_orders($query)
+        {
+        }
+        /**
          * Disables the languages filter for a customer to see all orders whatever the languages.
          * Hooked to the action 'parse_query'.
          *
@@ -1265,9 +1458,25 @@ namespace {
          *
          * @param PLL_Language|false $lang  False or language object.
          * @param WP_Query           $query WP_Query object.
-         * @return PLL_Language
+         * @return PLL_Language|false
          */
         public function pll_set_language_from_query($lang, $query)
+        {
+        }
+        /**
+         * Tells if the given query corresponds to the front page.
+         * This method inspects `WP_Query::$query` and uses a list of query vars that can be set without changing the type
+         * of the page displayed. For example, the front page with `?rating_filter=5` is still the front page
+         * (`rating_filter` comes from WC's widget "Products by Rating list").
+         *
+         * @see WC_Widget_Layered_Nav_Filters
+         *
+         * @since 1.8.1
+         *
+         * @param WP_Query $query An instance of the main query.
+         * @return bool
+         */
+        private function is_front_page(\WP_Query $query)
         {
         }
     }
@@ -1300,13 +1509,13 @@ namespace {
         {
         }
         /**
-         * Resets countries, continents and states translations when the language is set from the content.
+         * Replaces WooCommerce countries class by our own when language is set from the content.
          *
-         * @since 1.2.3
+         * @since 1.9.2
          *
          * @return void
          */
-        public function reset_translations()
+        public function override_countries()
         {
         }
         /**
@@ -1457,6 +1666,59 @@ namespace {
          * @return string Inline js script to add.
          */
         protected function get_filter_script($path)
+        {
+        }
+        /**
+         * Translates the product ID for the widget block reviews by product.
+         *
+         * @since 1.9
+         *
+         * @param array $parsed_block The block being rendered.
+         * @return array
+         */
+        public function filter_reviews_by_product_block_id($parsed_block)
+        {
+        }
+    }
+    /**
+     * @package Polylang-WC
+     */
+    /**
+     * Class managing countries, behaves like the WooCommerce one.
+     *
+     * @since 1.9.2
+     */
+    class PLLWC_Countries extends \WC_Countries
+    {
+        /**
+         * Cache of countries.
+         *
+         * @since 1.9.2
+         *
+         * @var array
+         */
+        private $countries_cache;
+        /**
+         * Gets all countries.
+         * Overrides parent method to disable cached country names
+         * so they can be translated correctly when language is set from the content.
+         * Partially copied from `WC_Countries::get_countries()`.
+         *
+         * @since 1.9.2
+         *
+         * @return array
+         */
+        public function get_countries()
+        {
+        }
+        /**
+         * Returns the WooCommerce countries list.
+         *
+         * @since 1.9.2
+         *
+         * @return array
+         */
+        private function read_countries()
         {
         }
     }
@@ -1813,6 +2075,197 @@ namespace {
         }
     }
     /**
+     * Class to declare compatibility with a WooCommerce feature.
+     * @since 1.9
+     * @since 1.9.1 Renamed from `PLLWC_HPOS_Feature` to `PLLWC_Feature`.
+     */
+    class PLLWC_Feature
+    {
+        /**
+         * Cache.
+         *
+         * @var bool[]
+         *
+         * @phpstan-var array<non-falsy-string, bool>
+         */
+        private $cache = array();
+        /**
+         * Unique feature id.
+         *
+         * @var string
+         *
+         * @phpstan-var non-empty-string
+         */
+        private $feature_id;
+        /**
+         * Condition to meet for the compatibility to be enabled along the feature.
+         *
+         * @var callable
+         */
+        private $condition_to_meet;
+        /**
+         * Constructor.
+         *
+         * @since 1.9.1
+         *
+         * @param string   $feature_id        Unique feature id.
+         * @param callable $condition_to_meet Condition to meet for our compatibility to be enabled along the feature.
+         *
+         * @phpstan-param non-empty-string $feature_id
+         */
+        public function __construct(string $feature_id, callable $condition_to_meet)
+        {
+        }
+        /**
+         * Tells if PLLWC can use the WC's feature.
+         *
+         * @since 1.9
+         *
+         * @return bool
+         */
+        public function exists() : bool
+        {
+        }
+        /**
+         * Tells if the feature is enabled.
+         * Must not be used before {@see self::exists()}.
+         *
+         * @since 1.9
+         *
+         * @return bool
+         */
+        public function is_enabled() : bool
+        {
+        }
+        /**
+         * Calls the method that declares this plugin compatible with WC's feature.
+         *
+         * @since 1.9
+         *
+         * @return void
+         */
+        public function declare_compatibility()
+        {
+        }
+        /**
+         * Declares this plugin compatible with WC's feature.
+         *
+         * @since 1.9
+         *
+         * @return void
+         */
+        public function declare_compatibility_callback()
+        {
+        }
+    }
+    /**
+     * @package Polylang-WC
+     */
+    /**
+     * Translates WooCommerce page IDs.
+     *
+     * @since 0.1
+     */
+    class PLLWC_Filter_WC_Pages
+    {
+        /**
+         * Page slugs to translate.
+         *
+         * @var string[]
+         * @phpstan-var non-empty-string[]
+         */
+        const TRANSLATED_PAGES = array('myaccount', 'shop', 'cart', 'checkout', 'terms');
+        /**
+         * Adds hooks to translate WC page IDs.
+         *
+         * @since 1.8
+         *
+         * @return void
+         */
+        public static function init()
+        {
+        }
+    }
+    /**
+     * @package Polylang-WC
+     */
+    /**
+     * Filter order queries by language when HPOS is enabled.
+     *
+     * @since 1.9
+     *
+     * @phpstan-type QueryClauses array{
+     *     fields: non-falsy-string,
+     *     join: string,
+     *     where: non-falsy-string,
+     *     groupby: string,
+     *     orderby: non-falsy-string,
+     *     limits: non-falsy-string
+     * }
+     */
+    class PLLWC_HPOS_Orders_Query
+    {
+        /**
+         * Launch hooks.
+         *
+         * @since 1.9
+         *
+         * @return self
+         */
+        public function init()
+        {
+        }
+        /**
+         * Maybe filters the query clauses by language by adding JOIN and WHERE clauses.
+         * Requires WC 7.9.0.
+         *
+         * @since 1.9
+         *
+         * @param string[] $clauses {
+         *     Associative array of the clauses for the query.
+         *
+         *     @type string $fields  The SELECT clause of the query.
+         *     @type string $join    The JOIN clause of the query.
+         *     @type string $where   The WHERE clause of the query.
+         *     @type string $groupby The GROUP BY clause of the query.
+         *     @type string $orderby The ORDER BY clause of the query.
+         *     @type string $limits  The LIMIT clause of the query.
+         * }
+         * @param object   $query   A `Automattic\WooCommerce\Internal\DataStores\Orders\OrdersTableQuery` instance.
+         * @return string[]
+         *
+         * @phpstan-param QueryClauses $clauses
+         * @phpstan-return QueryClauses
+         */
+        public function maybe_filter_query_clauses_by_lang($clauses, $query)
+        {
+        }
+        /**
+         * Returns the list of languages passed to the given query.
+         * Falls back to an array containing the current language if no languages are found in the query.
+         *
+         * @since 1.9
+         *
+         * @param string[]|string|null $languages An array of language codes, a comma-separated list of language codes, or `null`.
+         * @return PLL_Language[] A list of `PLL_Language` objects.
+         */
+        private function get_languages($languages) : array
+        {
+        }
+        /**
+         * Tells if the order types from the given query are all translated by PLLWC.
+         *
+         * @since 1.9
+         *
+         * @param string[]                 $types Order types.
+         * @param PLLWC_Order_Language_CPT $store The order language store.
+         * @return bool
+         */
+        private function are_translated_types(array $types, \PLLWC_Order_Language_CPT $store)
+        {
+        }
+    }
+    /**
      * @package Polylang-WC
      */
     /**
@@ -2113,14 +2566,14 @@ namespace {
         }
         /**
          * Prepares rewrite rules filters for the shop.
-         * Hooked to the filter 'pre_option_rewrite_rules'.
          *
          * @since 0.1
+         * @since 1.9 Hooked to `pll_prepare_rewrite_rules` and set default value to `$pre` parameter.
          *
          * @param string[] $pre Not used.
          * @return string[] Unmodified $pre.
          */
-        public function prepare_rewrite_rules($pre)
+        public function prepare_rewrite_rules($pre = array())
         {
         }
         /**
@@ -2280,11 +2733,12 @@ namespace {
          * Prepares the rewrite rules filters to translate endpoints slugs.
          *
          * @since 0.1
+         * @since 1.9 Hooked to `pll_prepare_rewrite_rules` and set default value to `$pre` parameter.
          *
          * @param string[] $pre Not used.
          * @return string[] Unmodified $pre.
          */
-        public function prepare_rewrite_rules($pre)
+        public function prepare_rewrite_rules($pre = array())
         {
         }
         /**
@@ -2349,127 +2803,173 @@ namespace {
         }
     }
     /**
-     * @package Polylang-WC
-     */
-    /**
-     * Setups an object language model when the managed object is a custom post type.
+     * Abstract class to use for object types that support at least one language.
      *
-     * @since 1.0
+     * @since 1.9
      */
-    abstract class PLLWC_Object_Language_CPT
+    abstract class PLLWC_Object_Language
     {
         /**
-         * Get the language taxonomy name.
+         * Instance of `PLL_Translatable_Object`.
          *
-         * @since 1.0
-         *
-         * @return string
+         * @var PLL_Translatable_Object
          */
-        public function get_tax_language()
+        protected $object;
+        /**
+         * Adds hooks.
+         *
+         * @since 1.9
+         *
+         * @return self
+         */
+        public function init()
         {
         }
         /**
-         * Stores the object language in the database.
+         * Returns the language taxonomy name.
          *
          * @since 1.0
+         * @since 1.9 Type-hinted.
          *
-         * @param int    $id   Object id.
-         * @param string $lang Language code.
-         * @return void
+         * @return string
+         *
+         * @phpstan-return non-empty-string
          */
-        public function set_language($id, $lang)
+        public function get_tax_language() : string
+        {
+        }
+        /**
+         * Stores the object's language in the database.
+         *
+         * @since 1.0
+         * @since 1.9 Type-hinted.
+         *
+         * @param int                     $id   Object ID.
+         * @param PLL_Language|string|int $lang Language (object, slug, or term ID).
+         * @return bool True when successfully assigned. False otherwise (or if the given language is already assigned to
+         *              the object).
+         */
+        public function set_language($id, $lang) : bool
         {
         }
         /**
          * Returns the language of an object.
          *
          * @since 1.0
-         * @since 1.8 Accepts composite values for `$field`.
          *
          * @param int    $id    Object ID.
          * @param string $field Optional, the language field to return (@see PLL_Language), defaults to `'slug'`.
-         *                      Pass `\OBJECT` constant to get the language object. A composite value can be used for
-         *                      language term property values, in the form of `{language_taxonomy_name}:{property_name}`
-         *                      (see {@see PLL_Language::get_tax_prop()} for the possible values).
-         *                      Ex: `term_language:term_taxonomy_id`.
-         * @return string|int|bool|string[]|PLL_Language The requested field or object for the object language, `false` if no
-         *                                               language is associated to that object.
+         *                      A composite value can be used for language term property values, in the form of
+         *                      `{language_taxonomy_name}:{property_name}` (see {@see PLL_Language::get_tax_prop()} for
+         *                      the possible values). Ex: `term_language:term_taxonomy_id`.
+         * @return string|int|bool|string[] The requested field value of the object language, `false` if no language is
+         *                                  associated to that object.
          *
+         * @phpstan-param non-falsy-string $field
          * @phpstan-return (
-         *     $field is \OBJECT ? PLL_Language : (
-         *         $field is 'slug' ? non-empty-string : string|int|bool|list<non-empty-string>
-         *     )
+         *     $field is 'slug' ? non-empty-string : string|int|bool|list<non-empty-string>
          * )|false
          */
         public function get_language($id, $field = 'slug')
         {
         }
         /**
-         * Returns a join clause to add to sql queries when filtering by language is needed directly in query.
+         * A JOIN clause to add to sql queries when filtering by language is needed directly in query.
          *
          * @since 1.0
+         * @since 1.9 Type-hinted.
          *
-         * @param string $alias Alias for $wpdb->posts table.
-         * @return string Join clause.
+         * @param string $alias Optional alias for object table.
+         * @return string The JOIN clause.
+         *
+         * @phpstan-return non-empty-string
          */
-        public function join_clause($alias = '')
+        public function join_clause($alias = '') : string
         {
         }
         /**
-         * Returns a where clause to add to sql queries when filtering by language is needed directly in query.
+         * A WHERE clause to add to sql queries when filtering by language is needed directly in query.
          *
          * @since 1.0
+         * @since 1.9 Type-hinted.
          *
-         * @param PLL_Language|string|string[] $lang A PLL_Language object or a comma separated list of language slug or an array of language slugs.
-         * @return string Where clause.
+         * @param PLL_Language|PLL_Language[]|string|string[] $lang A `PLL_Language` object, or a comma separated list of
+         *                                                          language slugs, or an array of language slugs or objects.
+         * @return string The WHERE clause.
          *
-         * @phpstan-param array<PLL_Language|non-empty-string>|PLL_Language|non-empty-string $lang
+         * @phpstan-param PLL_Language|PLL_Language[]|non-empty-string|non-empty-string[] $lang
          */
-        public function where_clause($lang)
+        public function where_clause($lang) : string
         {
         }
     }
-    /**
-     * @package Polylang-WC
-     */
     /**
      * Setups the order language model when orders are managed with a custom post type.
      *
      * @since 1.0
      */
-    class PLLWC_Order_Language_CPT extends \PLLWC_Object_Language_CPT
+    class PLLWC_Order_Language_CPT extends \PLLWC_Object_Language
     {
         /**
-         * Add filters.
+         * Constructor.
+         *
+         * @since 1.9
+         */
+        public function __construct()
+        {
+        }
+        /**
+         * Add hooks.
          *
          * @since 1.0
+         * @since 1.9 Returns an instance of this object.
          *
-         * @return void
+         * @return self
          */
         public function init()
         {
         }
         /**
-         * Add orders to teh list of the translated post types.
+         * Adds orders to the list of the translated post types.
          *
          * @since 1.0
          *
          * @param string[] $types List of post type names for which Polylang manages language and translations.
          * @param bool     $hide  True when displaying the list in Polylang settings.
          * @return string[] List of post type names for which Polylang manages language and translations.
+         *
+         * @phpstan-param array<non-falsy-string> $types
+         * @phpstan-return array<non-falsy-string>
          */
         public function translated_post_types($types, $hide)
         {
         }
         /**
-         * Remove the order post type from the bulk translate action.
+         * Removes the order post type from the bulk translate action.
          *
          * @since 1.0.4
          *
          * @param string[] $types List of post type names for which Polylang manages the bulk translate.
          * @return string[]
+         *
+         * @phpstan-param array<non-falsy-string> $types
+         * @phpstan-return array<non-falsy-string>
          */
         public function bulk_translate_post_types($types)
+        {
+        }
+        /**
+         * Gets the list of post types available for translation.
+         *
+         * @since 1.9
+         *
+         * @param string $context Either 'default' or 'display', defaults to 'default'.
+         *
+         * @return string[] List of post type names.
+         *
+         * @phpstan-return array<non-falsy-string>
+         */
+        public function get_post_types($context = 'default')
         {
         }
     }
@@ -2579,69 +3079,83 @@ namespace {
         }
     }
     /**
-     * @package Polylang-WC
-     */
-    /**
-     * Setups a translatable object language model when the object is a custom post type.
+     * Abstract class to use for object types that support languages and translations.
      *
      * @since 1.0
+     * @since 1.9 Renamed from `PLLWC_Translated_Object_Language_CPT` to `PLLWC_Translated_Object_Language`.
      */
-    abstract class PLLWC_Translated_Object_Language_CPT extends \PLLWC_Object_Language_CPT
+    abstract class PLLWC_Translated_Object_Language extends \PLLWC_Object_Language
     {
         /**
-         * Get the translations group taxonomy name.
+         * Instance of `PLL_Translated_Object`.
+         *
+         * @var PLL_Translated_Object
+         */
+        protected $object;
+        /**
+         * Returns the translations group taxonomy name.
          *
          * @since 1.0
+         * @since 1.9 Type-hinted.
          *
          * @return string
+         *
+         * @phpstan-return non-empty-string
          */
-        public function get_tax_translations()
+        public function get_tax_translations() : string
         {
         }
         /**
-         * Save the object translations.
+         * Saves the object's translations.
          *
          * @since 1.0
+         * @since 1.9 Returns the translations.
+         * @since 1.9 Type-hinted.
          *
-         * @param int[] $arr An associative array of translations with language code as key and product id as value.
-         * @return void
+         * @param int[] $translations An associative array of translations with language code as key and translation ID as value.
+         * @return int[] An associative array with language codes as key and object IDs as values.
+         *
+         * @phpstan-param non-empty-array<non-empty-string, positive-int> $translations
+         * @phpstan-return array<non-empty-string, positive-int>
          */
-        public function save_translations($arr)
+        public function save_translations($translations) : array
         {
         }
         /**
          * Returns an array of translations of an object.
          *
          * @since 1.0
+         * @since 1.9 Type-hinted.
          *
-         * @param int $id Object id.
-         * @return int[] An associative array of translations with language code as key and translation product id as value.
+         * @param int $id Object ID.
+         * @return int[] An associative array of translations with language code as key and translation ID as value.
+         *
+         * @phpstan-return array<non-empty-string, positive-int>
          */
-        public function get_translations($id)
+        public function get_translations($id) : array
         {
         }
         /**
-         * Among the object and its translations, returns the id of the object in the requested language.
+         * Among the object and its translations, returns the ID of the object which is in `$lang`.
          *
          * @since 1.0
          *
-         * @param int    $id   Object id.
-         * @param string $lang Optional language code, defaults to the current language.
-         * @return int|false|null Object id of the translation if exists, false otherwise, null if the current language is not defined yet.
+         * @param int                      $id   Object ID.
+         * @param PLL_Language|string|null $lang Optional language (object or slug), defaults to the current language.
+         * @return int|null The translation object ID if exists, `0` otherwise. `null` if the language is not defined yet.
+         *
+         * @phpstan-return int<0, max>|null
          */
-        public function get($id, $lang = '')
+        public function get($id, $lang = \null)
         {
         }
     }
-    /**
-     * @package Polylang-WC
-     */
     /**
      * Setups the product languages and translations model when products are managed with a custom post type.
      *
      * @since 1.0
      */
-    class PLLWC_Product_Language_CPT extends \PLLWC_Translated_Object_Language_CPT
+    class PLLWC_Product_Language_CPT extends \PLLWC_Translated_Object_Language
     {
         /**
          * WooCommerce permalinks option.
@@ -2670,11 +3184,12 @@ namespace {
         {
         }
         /**
-         * Add filters, should be called only once.
+         * Adds hooks.
          *
          * @since 1.0
+         * @since 1.9 Returns an instance of this object.
          *
-         * @return void
+         * @return self
          */
         public function init()
         {
@@ -2731,11 +3246,12 @@ namespace {
          * Returns legacy product metas mapped to product properties.
          *
          * @since 1.0
+         * @since 1.9 Type-hinted.
          *
          * @param bool $sync True if it is synchronization, false if it is a copy.
          * @return string[]
          */
-        protected function get_legacy_metas($sync)
+        protected function get_legacy_metas($sync) : array
         {
         }
         /**
@@ -2951,6 +3467,8 @@ namespace {
          * @param int    $tr_parent Target variable product id.
          * @param string $lang      Target language.
          * @return void
+         *
+         * @phpstan-param non-empty-string $lang
          */
         protected function copy_variation($id, $tr_parent, $lang)
         {
@@ -2964,6 +3482,8 @@ namespace {
          * @param int    $to   Product id to which we paste informations.
          * @param string $lang Language code.
          * @return void
+         *
+         * @phpstan-param non-empty-string $lang
          */
         public function copy_variations($from, $to, $lang)
         {
@@ -3265,6 +3785,24 @@ namespace {
          * @since 1.1
          */
         public function __construct()
+        {
+        }
+        /**
+         * Adds a `lang` entry to the given array, depending on the language requested in the REST API.
+         * This is used to filter the orders by language in WC's REST route V3 (`/wc/v3/orders`).
+         * Hooked to `woocommerce_rest_{$post_type}_object_query`.
+         *
+         * @see WC_REST_CRUD_Controller::prepare_objects_query()
+         *
+         * @since 1.9
+         *
+         * @param array           $args    Key value array of query var to query value.
+         * @param WP_REST_Request $request The request used.
+         * @return array
+         *
+         * @phpstan-param WP_REST_Request<array{lang?: string}> $request
+         */
+        public function add_language_query_arg_in_rest($args, $request)
         {
         }
         /**
@@ -3717,6 +4255,30 @@ namespace {
         public function translate_blocks($blocks, $lang)
         {
         }
+        /**
+         * Translates the HTML link code inside the block depending on the block version.
+         *
+         * @since 1.9.4
+         *
+         * @param array  $innerblock The block to search into and to modify.
+         * @param string $link       The translated link for replacing.
+         * @return void
+         */
+        private function translate_button_link(array &$innerblock, string $link)
+        {
+        }
+        /**
+         * Translates one version of the HTML link code inside the block.
+         *
+         * @since 1.9.4
+         *
+         * @param array  $innerblock The block to search into and to modify.
+         * @param string $link       The translated link for replacing.
+         * @return void
+         */
+        private function translate_link(array &$innerblock, string $link)
+        {
+        }
     }
     /**
      * @package Polylang-WC
@@ -4046,6 +4608,18 @@ namespace {
         public function export_product_metas($keys, $from)
         {
         }
+        /**
+         * Remove variation title and excerpt from post fields to export.
+         *
+         * @since 1.9
+         *
+         * @param string[] $allowed_fields List of post fields we want to export.
+         * @param WP_Post  $post           Post object.
+         * @return string[] List of post fields we want to export.
+         */
+        public function remove_fields_for_variations($allowed_fields, $post)
+        {
+        }
     }
     /**
      * Class to manage WooCommerce product import with Polylang Pro XLIFF Importer.
@@ -4213,16 +4787,18 @@ namespace {
         {
         }
         /**
-         * Assigns the booking language in case a visitor adds the product to cart in a language
+         * Assigns the right booking language.
+         * In case a visitor adds the product to cart in a language
          * and then switches the language before he completes the checkout.
-         * Hooked to the action 'woocommerce_booking_in-cart_to_unpaid'.
+         * Hooked to the action 'woocommerce_new_order_item'.
          *
-         * @since 0.7.3
+         * @since 1.9
          *
-         * @param int $booking_id Booking ID.
-         * @return void
+         * @param int                 $item_id     An order item ID.
+         * @param WC_Order_Item|false $order_item  Order item object.
+         * @return int
          */
-        public function set_booking_language_at_checkout($booking_id)
+        public function set_booking_language_at_checkout($item_id, $order_item)
         {
         }
         /**
@@ -4244,8 +4820,8 @@ namespace {
          *
          * @since 0.6
          *
-         * @param int    $from ID of the product from which we copy informations.
-         * @param int    $to   ID of the product to which we paste informations.
+         * @param int    $from ID of the product from which we copy information.
+         * @param int    $to   ID of the product to which we paste information.
          * @param string $lang Language slug.
          * @return void
          */
@@ -5609,27 +6185,14 @@ namespace {
         }
         /**
          * Language and translation management for the subscriptions post type.
-         * Hooked to the filter 'pll_get_post_types'.
+         * Hooked to the filter 'pllwc_get_order_types'.
          *
          * @since 0.4
          *
          * @param array $types List of post type names for which Polylang manages language and translations.
-         * @param bool  $hide  True when displaying the list in Polylang settings.
          * @return array List of post type names for which Polylang manages language and translations.
          */
-        public function translate_types($types, $hide)
-        {
-        }
-        /**
-         * Removes the subscriptions post type from bulk translate.
-         * Hooked to the filter 'pll_bulk_translate_post_types'.
-         *
-         * @since 1.2
-         *
-         * @param array $types List of post type names for which Polylang manages the bulk translation.
-         * @return array
-         */
-        public function bulk_translate_post_types($types)
+        public function translate_types($types)
         {
         }
         /**
@@ -5643,31 +6206,6 @@ namespace {
          * @return object Unmodified order
          */
         public function new_order_created($new_order, $subscription)
-        {
-        }
-        /**
-         * Removes the standard languages columns for subscriptions
-         * and replace them with one unique column as done for the orders.
-         * Hooked to the action 'wp_loaded'.
-         *
-         * @since 0.4
-         *
-         * @return void
-         */
-        public function custom_columns()
-        {
-        }
-        /**
-         * Removes the language metabox for the subscriptions
-         * and replaces it by the metabox used for the orders.
-         * Hooked to the action 'add_meta_boxes'.
-         *
-         * @since 0.4
-         *
-         * @param string $post_type Post type.
-         * @return void
-         */
-        public function add_meta_boxes($post_type)
         {
         }
         /**
@@ -6192,6 +6730,14 @@ namespace {
          */
         public $translation_import;
         /**
+         * @var PLLWC_HPOS_Orders_Query|null
+         */
+        public $hpos_orders_query;
+        /**
+         * @var PLLWC_Feature|null
+         */
+        public $hpos_feature;
+        /**
          * Singleton.
          *
          * @var Polylang_Woocommerce
@@ -6299,6 +6845,16 @@ namespace {
         public static function activated_plugin($plugin_name, $network_wide)
         {
         }
+        /**
+         * Declares Polylang For WooCommerce compatibility with WooCommerce features.
+         *
+         * @since 1.9.3
+         *
+         * @return void
+         */
+        public function declare_features_compatibility()
+        {
+        }
     }
     /**
      * Manages Polylang for WooCommerce uninstallation.
@@ -6325,7 +6881,7 @@ namespace {
         }
     }
     // autoload_real.php @generated by Composer
-    class ComposerAutoloaderInitde64d8e252ffa1012de456aa02eeccce
+    class ComposerAutoloaderInitec585ce15135e1d365a7efee4ca37621
     {
         private static $loader;
         public static function loadClassLoader($class)
@@ -6340,31 +6896,12 @@ namespace {
     }
 }
 namespace Composer\Autoload {
-    class ComposerStaticInitde64d8e252ffa1012de456aa02eeccce
+    class ComposerStaticInitec585ce15135e1d365a7efee4ca37621
     {
-        public static $classMap = array('PLLWC_Admin' => __DIR__ . '/../..' . '/admin/admin.php', 'PLLWC_Admin_Coupons' => __DIR__ . '/../..' . '/admin/admin-coupons.php', 'PLLWC_Admin_Menus' => __DIR__ . '/../..' . '/admin/admin-menus.php', 'PLLWC_Admin_Orders' => __DIR__ . '/../..' . '/admin/admin-orders.php', 'PLLWC_Admin_Product_Duplicate' => __DIR__ . '/../..' . '/admin/admin-product-duplicate.php', 'PLLWC_Admin_Products' => __DIR__ . '/../..' . '/admin/admin-products.php', 'PLLWC_Admin_Reports' => __DIR__ . '/../..' . '/admin/admin-reports.php', 'PLLWC_Admin_Site_Health' => __DIR__ . '/../..' . '/admin/admin-site-health.php', 'PLLWC_Admin_Status_Reports' => __DIR__ . '/../..' . '/admin/admin-status-reports.php', 'PLLWC_Admin_Taxonomies' => __DIR__ . '/../..' . '/admin/admin-taxonomies.php', 'PLLWC_Admin_WC_Install' => __DIR__ . '/../..' . '/admin/admin-wc-install.php', 'PLLWC_Bookings' => __DIR__ . '/../..' . '/plugins/bookings.php', 'PLLWC_Brands' => __DIR__ . '/../..' . '/plugins/wc-brands.php', 'PLLWC_Composite_Products' => __DIR__ . '/../..' . '/plugins/composite-products.php', 'PLLWC_Coupons' => __DIR__ . '/../..' . '/include/coupons.php', 'PLLWC_Data_Store' => __DIR__ . '/../..' . '/include/data-store.php', 'PLLWC_Dynamic_Pricing' => __DIR__ . '/../..' . '/plugins/dynamic-pricing.php', 'PLLWC_Emails' => __DIR__ . '/../..' . '/include/emails.php', 'PLLWC_Follow_Up_Emails' => __DIR__ . '/../..' . '/plugins/follow-up-emails.php', 'PLLWC_Free_Gift_Coupons' => __DIR__ . '/../..' . '/plugins/free-gift-coupons.php', 'PLLWC_Frontend' => __DIR__ . '/../..' . '/frontend/frontend.php', 'PLLWC_Frontend_Account' => __DIR__ . '/../..' . '/frontend/frontend-account.php', 'PLLWC_Frontend_Cart' => __DIR__ . '/../..' . '/frontend/frontend-cart.php', 'PLLWC_Frontend_WC_Pages' => __DIR__ . '/../..' . '/frontend/frontend-wc-pages.php', 'PLLWC_Germanized' => __DIR__ . '/../..' . '/plugins/germanized.php', 'PLLWC_Install' => __DIR__ . '/../..' . '/include/install.php', 'PLLWC_Links' => __DIR__ . '/../..' . '/include/links.php', 'PLLWC_Links_Pro' => __DIR__ . '/../..' . '/include/links-pro.php', 'PLLWC_Min_Max_Quantities' => __DIR__ . '/../..' . '/plugins/min-max-quantities.php', 'PLLWC_Mix_Match' => __DIR__ . '/../..' . '/plugins/mix-match.php', 'PLLWC_Object_Language_CPT' => __DIR__ . '/../..' . '/include/object-language-cpt.php', 'PLLWC_Order_Language_CPT' => __DIR__ . '/../..' . '/include/order-language-cpt.php', 'PLLWC_Plugins_Compat' => __DIR__ . '/../..' . '/plugins/plugins-compat.php', 'PLLWC_Post_Types' => __DIR__ . '/../..' . '/include/post-types.php', 'PLLWC_Product_Bundles' => __DIR__ . '/../..' . '/plugins/product-bundles.php', 'PLLWC_Product_Data_Store_CPT' => __DIR__ . '/../..' . '/include/product-data-store-cpt.php', 'PLLWC_Product_Export' => __DIR__ . '/../..' . '/include/export.php', 'PLLWC_Product_Import' => __DIR__ . '/../..' . '/include/import.php', 'PLLWC_Product_Language_CPT' => __DIR__ . '/../..' . '/include/product-language-cpt.php', 'PLLWC_Products' => __DIR__ . '/../..' . '/include/products.php', 'PLLWC_REST_API' => __DIR__ . '/../..' . '/include/rest-api.php', 'PLLWC_REST_Order' => __DIR__ . '/../..' . '/include/rest-order.php', 'PLLWC_REST_Product' => __DIR__ . '/../..' . '/include/rest-product.php', 'PLLWC_Shipment_Tracking' => __DIR__ . '/../..' . '/plugins/shipment-tracking.php', 'PLLWC_Stock' => __DIR__ . '/../..' . '/include/stock.php', 'PLLWC_Stock_Manager' => __DIR__ . '/../..' . '/plugins/stock-manager.php', 'PLLWC_Strings' => __DIR__ . '/../..' . '/include/strings.php', 'PLLWC_Stripe' => __DIR__ . '/../..' . '/plugins/stripe.php', 'PLLWC_Subscriptions' => __DIR__ . '/../..' . '/plugins/subscriptions.php', 'PLLWC_Swatches' => __DIR__ . '/../..' . '/plugins/swatches.php', 'PLLWC_Sync_Content' => __DIR__ . '/../..' . '/include/sync-content.php', 'PLLWC_Table_Rate_Shipping' => __DIR__ . '/../..' . '/plugins/table-rate-shipping.php', 'PLLWC_Translated_Object_Language_CPT' => __DIR__ . '/../..' . '/include/translated-object-language-cpt.php', 'PLLWC_Translation_Export' => __DIR__ . '/../..' . '/modules/translation-import-export/export.php', 'PLLWC_Translation_Import' => __DIR__ . '/../..' . '/modules/translation-import-export/import.php', 'PLLWC_Variation_Data_Store_CPT' => __DIR__ . '/../..' . '/include/variation-data-store-cpt.php', 'PLLWC_WCFD' => __DIR__ . '/../..' . '/plugins/wcfd.php', 'PLLWC_Wizard' => __DIR__ . '/../..' . '/admin/wizard.php', 'PLLWC_Xdata' => __DIR__ . '/../..' . '/include/xdata.php', 'PLLWC_Xdata_Session_Manager' => __DIR__ . '/../..' . '/include/xdata-session-manager.php', 'PLLWC_Yith_WCAS' => __DIR__ . '/../..' . '/plugins/yith-wcas.php');
+        public static $classMap = array('Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php', 'PLLWC_Admin' => __DIR__ . '/../..' . '/admin/admin.php', 'PLLWC_Admin_Coupons' => __DIR__ . '/../..' . '/admin/admin-coupons.php', 'PLLWC_Admin_Menus' => __DIR__ . '/../..' . '/admin/admin-menus.php', 'PLLWC_Admin_Orders' => __DIR__ . '/../..' . '/admin/admin-orders.php', 'PLLWC_Admin_Orders_HPOS' => __DIR__ . '/../..' . '/admin/admin-orders-hpos.php', 'PLLWC_Admin_Orders_Legacy' => __DIR__ . '/../..' . '/admin/admin-orders-legacy.php', 'PLLWC_Admin_Product_Duplicate' => __DIR__ . '/../..' . '/admin/admin-product-duplicate.php', 'PLLWC_Admin_Products' => __DIR__ . '/../..' . '/admin/admin-products.php', 'PLLWC_Admin_Reports' => __DIR__ . '/../..' . '/admin/admin-reports.php', 'PLLWC_Admin_Site_Health' => __DIR__ . '/../..' . '/admin/admin-site-health.php', 'PLLWC_Admin_Status_Reports' => __DIR__ . '/../..' . '/admin/admin-status-reports.php', 'PLLWC_Admin_Taxonomies' => __DIR__ . '/../..' . '/admin/admin-taxonomies.php', 'PLLWC_Admin_WC_Install' => __DIR__ . '/../..' . '/admin/admin-wc-install.php', 'PLLWC_Bookings' => __DIR__ . '/../..' . '/plugins/bookings.php', 'PLLWC_Brands' => __DIR__ . '/../..' . '/plugins/wc-brands.php', 'PLLWC_Composite_Products' => __DIR__ . '/../..' . '/plugins/composite-products.php', 'PLLWC_Countries' => __DIR__ . '/../..' . '/include/countries.php', 'PLLWC_Coupons' => __DIR__ . '/../..' . '/include/coupons.php', 'PLLWC_Data_Store' => __DIR__ . '/../..' . '/include/data-store.php', 'PLLWC_Dynamic_Pricing' => __DIR__ . '/../..' . '/plugins/dynamic-pricing.php', 'PLLWC_Emails' => __DIR__ . '/../..' . '/include/emails.php', 'PLLWC_Feature' => __DIR__ . '/../..' . '/include/feature.php', 'PLLWC_Filter_WC_Pages' => __DIR__ . '/../..' . '/include/filter-wc-pages.php', 'PLLWC_Follow_Up_Emails' => __DIR__ . '/../..' . '/plugins/follow-up-emails.php', 'PLLWC_Free_Gift_Coupons' => __DIR__ . '/../..' . '/plugins/free-gift-coupons.php', 'PLLWC_Frontend' => __DIR__ . '/../..' . '/frontend/frontend.php', 'PLLWC_Frontend_Account' => __DIR__ . '/../..' . '/frontend/frontend-account.php', 'PLLWC_Frontend_Cart' => __DIR__ . '/../..' . '/frontend/frontend-cart.php', 'PLLWC_Frontend_WC_Pages' => __DIR__ . '/../..' . '/frontend/frontend-wc-pages.php', 'PLLWC_Germanized' => __DIR__ . '/../..' . '/plugins/germanized.php', 'PLLWC_HPOS_Orders_Query' => __DIR__ . '/../..' . '/include/hpos-orders-query.php', 'PLLWC_Install' => __DIR__ . '/../..' . '/include/install.php', 'PLLWC_Links' => __DIR__ . '/../..' . '/include/links.php', 'PLLWC_Links_Pro' => __DIR__ . '/../..' . '/include/links-pro.php', 'PLLWC_Min_Max_Quantities' => __DIR__ . '/../..' . '/plugins/min-max-quantities.php', 'PLLWC_Mix_Match' => __DIR__ . '/../..' . '/plugins/mix-match.php', 'PLLWC_Object_Language' => __DIR__ . '/../..' . '/include/object-language.php', 'PLLWC_Order_Language_CPT' => __DIR__ . '/../..' . '/include/order-language-cpt.php', 'PLLWC_Plugins_Compat' => __DIR__ . '/../..' . '/plugins/plugins-compat.php', 'PLLWC_Post_Types' => __DIR__ . '/../..' . '/include/post-types.php', 'PLLWC_Product_Bundles' => __DIR__ . '/../..' . '/plugins/product-bundles.php', 'PLLWC_Product_Data_Store_CPT' => __DIR__ . '/../..' . '/include/product-data-store-cpt.php', 'PLLWC_Product_Export' => __DIR__ . '/../..' . '/include/export.php', 'PLLWC_Product_Import' => __DIR__ . '/../..' . '/include/import.php', 'PLLWC_Product_Language_CPT' => __DIR__ . '/../..' . '/include/product-language-cpt.php', 'PLLWC_Products' => __DIR__ . '/../..' . '/include/products.php', 'PLLWC_REST_API' => __DIR__ . '/../..' . '/include/rest-api.php', 'PLLWC_REST_Order' => __DIR__ . '/../..' . '/include/rest-order.php', 'PLLWC_REST_Product' => __DIR__ . '/../..' . '/include/rest-product.php', 'PLLWC_Shipment_Tracking' => __DIR__ . '/../..' . '/plugins/shipment-tracking.php', 'PLLWC_Stock' => __DIR__ . '/../..' . '/include/stock.php', 'PLLWC_Stock_Manager' => __DIR__ . '/../..' . '/plugins/stock-manager.php', 'PLLWC_Strings' => __DIR__ . '/../..' . '/include/strings.php', 'PLLWC_Stripe' => __DIR__ . '/../..' . '/plugins/stripe.php', 'PLLWC_Subscriptions' => __DIR__ . '/../..' . '/plugins/subscriptions.php', 'PLLWC_Swatches' => __DIR__ . '/../..' . '/plugins/swatches.php', 'PLLWC_Sync_Content' => __DIR__ . '/../..' . '/include/sync-content.php', 'PLLWC_Table_Rate_Shipping' => __DIR__ . '/../..' . '/plugins/table-rate-shipping.php', 'PLLWC_Translated_Object_Language' => __DIR__ . '/../..' . '/include/translated-object-language.php', 'PLLWC_Translation_Export' => __DIR__ . '/../..' . '/modules/translation-import-export/export.php', 'PLLWC_Translation_Import' => __DIR__ . '/../..' . '/modules/translation-import-export/import.php', 'PLLWC_Variation_Data_Store_CPT' => __DIR__ . '/../..' . '/include/variation-data-store-cpt.php', 'PLLWC_WCFD' => __DIR__ . '/../..' . '/plugins/wcfd.php', 'PLLWC_Wizard' => __DIR__ . '/../..' . '/admin/wizard.php', 'PLLWC_Xdata' => __DIR__ . '/../..' . '/include/xdata.php', 'PLLWC_Xdata_Session_Manager' => __DIR__ . '/../..' . '/include/xdata-session-manager.php', 'PLLWC_Yith_WCAS' => __DIR__ . '/../..' . '/plugins/yith-wcas.php');
         public static function getInitializer(\Composer\Autoload\ClassLoader $loader)
         {
         }
-    }
-}
-/*
- * This file is part of Composer.
- *
- * (c) Nils Adermann <naderman@naderman.de>
- *     Jordi Boggiano <j.boggiano@seld.be>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-namespace Composer\Autoload {
-    /**
-     * Scope isolated include.
-     *
-     * Prevents access to $this/self from included files.
-     */
-    function includeFile($file)
-    {
     }
 }
 namespace {
