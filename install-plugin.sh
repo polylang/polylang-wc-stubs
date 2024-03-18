@@ -62,13 +62,13 @@ site:{YOUR-SITE}"
 	fi
 
 	local INFOURL='https://polylang.pro'
-	local PARAMS="edd_action=get_version&license=$LICENSE&url=$SITE&item_name=Polylang%20for%20WooCommerce&version=1.5.4"
+	local PARAMS="edd_action=get_version&license=$LICENSE&url=$SITE&item_name=Polylang%20for%20WooCommerce&version=1.9.4"
 	local HEADERS='Content-Type: application/x-www-form-urlencoded;Cache-Control: no-cache;Accept: application/json;Connection: keep-alive'
 
 	if [ `which curl` ]; then
-		local INFO=$(curl -d "$PARAMS" -H "$HADERS" -X POST -s "$INFOURL")
+		local INFO=$(curl -d "$PARAMS" -H "$HEADERS" -X POST -s "$INFOURL")
 	elif [ `which wget` ]; then
-		local INFO=$(wget --post-data "$PARAMS" --header "$HADERS" "$INFOURL" -q -O -)
+		local INFO=$(wget --post-data "$PARAMS" --header "$HEADERS" "$INFOURL" -q -O -)
 	fi
 
 	local URL=$(get_package_url "$INFO")
