@@ -14,6 +14,7 @@ return \StubsGenerator\Finder::create()
 			'tests',
 			'node_modules',
 			'tmp',
+			'vendor/composer',
 		]
 	)
 	->sortByName();
