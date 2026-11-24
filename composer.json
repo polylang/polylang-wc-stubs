@@ -5,7 +5,7 @@
 	"homepage": "https://github.com/polylang/polylang-wc-stubs",
 	"type": "library",
 	"require-dev": {
-		"php": "~7.1",
-		"giacocorsiglia/stubs-generator": "^0.5.0"
+		"php": "^7.4 || ^8.0",
+		"php-stubs/generator": "^0.9"
 	}
 }
