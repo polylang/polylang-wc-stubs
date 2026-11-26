@@ -1,0 +1,67 @@
+name: Update Stubs
+
+on:
+  repository_dispatch:
+    types: [polylang-wc-commit]
+  workflow_dispatch:
+
+jobs:
+  update-stubs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout polylang-wc-stubs
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_ACCESS_TOKEN }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          coverage: none
+
+      - name: Clone Polylang for WooCommerce
+        run: |
+          git clone --depth 1 --branch master https://${{ secrets.GH_ACCESS_TOKEN }}@github.com/polylang/polylang-wc.git polylang-wc
+
+      - name: Install Polylang for WooCommerce Composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: 'highest'
+          composer-options: '--no-dev'
+          working-directory: polylang-wc
+        env:
+          COMPOSER_AUTH: ${{ secrets.GH_COMPOSER_AUTH }}
+
+      - name: Install polylang-wc-stubs Composer dependencies
+        uses: ramsey/composer-install@v3
+        with:
+          dependency-versions: 'highest'
+
+      - name: Generate stubs
+        run: bash generate.sh
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if git diff --quiet polylang-wc-stubs.php; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push changes
+        if: steps.check_changes.outputs.has_changes == 'true'
+        run: |
+          COMMIT_HASH=$(git -C polylang-wc rev-parse HEAD)
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add polylang-wc-stubs.php
+          git commit -m "Update stubs from Polylang for WooCommerce ${COMMIT_HASH}"
+          git push
+
+      - name: Cleanup
+        if: always()
+        run: |
+          rm -rf polylang-wc
